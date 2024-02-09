@@ -1,0 +1,78 @@
+#!/bin/sh
+
+# Copyright (c) 2024, Firas Khalil Khana
+# Distributed under the terms of the ISC License
+
+rm -fr /tmp/initramfs
+install -d /tmp/initramfs
+
+rm -fr ~/initramfs.generated
+
+cd /tmp/initramfs
+
+install -d dev etc proc run sys usr/bin usr/lib var
+
+ln -fns usr/bin bin
+ln -fns usr/lib lib
+
+cp -ar /root/initramfs/init .
+
+cp -ar /usr/bin/blkid usr/bin
+cp -ar /usr/bin/kmod usr/bin
+cp -ar /usr/bin/mdevd usr/bin
+cp -ar /usr/bin/mdevd-coldplug usr/bin
+cp -ar /usr/bin/mount usr/bin
+cp -ar /usr/bin/switch_root usr/bin
+cp -ar /usr/bin/toybox usr/bin
+cp -ar /usr/bin/yash usr/bin
+
+ln -fns kmod usr/bin/insmod
+ln -fns kmod usr/bin/lsmod
+ln -fns kmod usr/bin/modprobe
+ln -fns yash usr/bin/sh
+
+for i in $(toybox); do ln -fns toybox /tmp/initramfs/usr/bin/$i; done
+
+cp -ar /usr/lib/ld-musl-x86_64.so.1 usr/lib
+cp -ar /usr/lib/libblkid.so* usr/lib
+cp -ar /usr/lib/libc.so usr/lib
+cp -ar /usr/lib/libcrypto* usr/lib
+cp -ar /usr/lib/liblz* usr/lib
+cp -ar /usr/lib/libmount.so* usr/lib
+cp -ar /usr/lib/libskarnet.so* usr/lib
+cp -ar /usr/lib/libterminfo.so usr/lib
+cp -ar /usr/lib/libz.so* usr/lib
+cp -ar /usr/lib/libzstd.so* usr/lib
+
+version="$(uname -r)"
+
+TARGETMOD="/tmp/initramfs/usr/lib/modules/$version/kernel"
+install -d $TARGETMOD/drivers/usb
+
+MODD="/usr/lib/modules/$version/kernel"
+
+cp -ar $MODD/arch $TARGETMOD
+cp -ar $MODD/crypto $TARGETMOD
+cp -ar $MODD/drivers/ata $TARGETMOD/drivers
+cp -ar $MODD/drivers/block $TARGETMOD/drivers
+cp -ar $MODD/drivers/cdrom $TARGETMOD/drivers
+cp -ar $MODD/drivers/hid $TARGETMOD/drivers
+cp -ar $MODD/drivers/hwmon $TARGETMOD/drivers
+cp -ar $MODD/drivers/input $TARGETMOD/drivers
+cp -ar $MODD/drivers/md $TARGETMOD/drivers
+cp -ar $MODD/drivers/message $TARGETMOD/drivers
+cp -ar $MODD/drivers/nvme $TARGETMOD/drivers
+cp -ar $MODD/drivers/scsi $TARGETMOD/drivers
+cp -ar $MODD/drivers/usb/host $TARGETMOD/drivers
+cp -ar $MODD/drivers/usb/storage $TARGETMOD/drivers
+cp -ar $MODD/drivers/virtio $TARGETMOD/drivers
+cp -ar $MODD/fs $TARGETMOD
+cp -ar $MODD/lib $TARGETMOD
+
+cp -ar $MODD/../modules.builtin "/tmp/initramfs/usr/lib/modules/$version"
+cp -ar $MODD/../modules.builtin.modinfo "/tmp/initramfs/usr/lib/modules/$version"
+cp -ar $MODD/../modules.order "/tmp/initramfs/usr/lib/modules/$version"
+
+depmod -b /tmp/initramfs $version
+
+find . | bsdcpio -oH newc | zstd -22 --ultra -T0 > ~/initramfs.generated

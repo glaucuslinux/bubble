@@ -1,0 +1,41 @@
+#!/bin/sh
+
+# Copyright (c) 2024, Firas Khalil Khana
+# Distributed under the terms of the ISC License
+
+export PATH=/usr/bin:/bin
+
+mount -t devtmpfs devtmpfs /dev
+mount -t proc proc /proc
+mount -t sysfs sys /sys
+
+modprobe ata_piix
+modprobe atkbd
+modprobe cdrom
+modprobe erofs
+modprobe i8042
+modprobe iso9660
+modprobe loop
+modprobe overlay
+modprobe sr_mod
+
+mdevd-coldplug
+
+install -d /media/cdrom /media/rootfs-ro /media/rootfs-rw /mnt/root
+
+mount -o ro -t iso9660 $(blkid -L GLAUCUS) /media/cdrom
+mount -t erofs /media/cdrom/boot/rootfs.erofs /media/rootfs-ro
+
+mount -o size=1G -t tmpfs tmpfs /media/rootfs-rw
+
+install -d /media/rootfs-rw/upper /media/rootfs-rw/work
+
+mount -o lowerdir=/media/rootfs-ro,upperdir=/media/rootfs-rw/upper,workdir=/media/rootfs-rw/work -t overlay overlay /mnt/root
+
+install -d /mnt/root/mnt/cdrom /mnt/root/mnt/rootfs-ro /mnt/root/mnt/rootfs-rw
+
+mount --move /media/cdrom /mnt/root/mnt/cdrom
+mount --move /media/rootfs-ro /mnt/root/mnt/rootfs-ro
+mount --move /media/rootfs-rw /mnt/root/mnt/rootfs-rw
+
+exec switch_root /mnt/root /bin/init
