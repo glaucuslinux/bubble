@@ -19,19 +19,20 @@ ln -sfn bin usr/sbin
 
 cp -ar /root/initramfs-generator/init .
 
+cp -ar /usr/bin/bash usr/bin
 cp -ar /usr/bin/blkid usr/bin
+cp -ar /usr/bin/kill usr/bin
 cp -ar /usr/bin/kmod usr/bin
 cp -ar /usr/bin/mdevd usr/bin
 cp -ar /usr/bin/mdevd-coldplug usr/bin
 cp -ar /usr/bin/mount usr/bin
 cp -ar /usr/bin/switch_root usr/bin
 cp -ar /usr/bin/toybox usr/bin
-cp -ar /usr/bin/yash usr/bin
 
 ln -sfn kmod usr/bin/insmod
 ln -sfn kmod usr/bin/lsmod
 ln -sfn kmod usr/bin/modprobe
-ln -sfn yash usr/bin/sh
+ln -sfn bash usr/bin/sh
 
 for i in $(toybox); do ln -sfn toybox /tmp/initramfs/usr/bin/$i; done
 

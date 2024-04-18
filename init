@@ -19,6 +19,7 @@ modprobe loop
 modprobe overlay
 modprobe sr_mod
 
+mdevd & mdevd_pid=$!
 mdevd-coldplug
 
 install -d /media/cdrom /media/rootfs-ro /media/rootfs-rw /mnt/root
@@ -37,5 +38,7 @@ install -d /mnt/root/mnt/cdrom /mnt/root/mnt/rootfs-ro /mnt/root/mnt/rootfs-rw
 mount --move /media/cdrom /mnt/root/mnt/cdrom
 mount --move /media/rootfs-ro /mnt/root/mnt/rootfs-ro
 mount --move /media/rootfs-rw /mnt/root/mnt/rootfs-rw
+
+kill "$mdevd_pid"
 
 exec switch_root /mnt/root /bin/init
