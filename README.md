@@ -1,5 +1,5 @@
 # initramfs-generator
-glaucus's initramfs generator
+glaucus initramfs generator
 
 ## Community
 * [Discord](https://discord.gg/nDKNmNc)
