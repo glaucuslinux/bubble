@@ -6,7 +6,7 @@
 rm -fr /tmp/initramfs
 install -d /tmp/initramfs
 
-rm -fr ~/initramfs.generated
+rm -fr ~/initramfs
 
 cd /tmp/initramfs
 
@@ -18,17 +18,19 @@ ln -sfn usr/lib lib
 ln -sfn usr/bin sbin
 ln -sfn bin usr/sbin
 
-cp -ar /root/initramfs-generator/init .
+cp -a ~/initramfs-generator/init .
 
-cp -ar /usr/bin/bash usr/bin
-cp -ar /usr/bin/blkid usr/bin
-cp -ar /usr/bin/kill usr/bin
-cp -ar /usr/bin/kmod usr/bin
-cp -ar /usr/bin/mdevd usr/bin
-cp -ar /usr/bin/mdevd-coldplug usr/bin
-cp -ar /usr/bin/mount usr/bin
-cp -ar /usr/bin/switch_root usr/bin
-cp -ar /usr/bin/toybox usr/bin
+cp -a /etc/mdev.conf etc
+
+cp -a /usr/bin/bash usr/bin
+cp -a /usr/bin/blkid usr/bin
+cp -a /usr/bin/kill usr/bin
+cp -a /usr/bin/kmod usr/bin
+cp -a /usr/bin/mdevd usr/bin
+cp -a /usr/bin/mdevd-coldplug usr/bin
+cp -a /usr/bin/mount usr/bin
+cp -a /usr/bin/switch_root usr/bin
+cp -a /usr/bin/toybox usr/bin
 
 ln -sfn kmod usr/bin/insmod
 ln -sfn kmod usr/bin/lsmod
@@ -37,16 +39,16 @@ ln -sfn bash usr/bin/sh
 
 for i in $(toybox); do ln -sfn toybox /tmp/initramfs/usr/bin/$i; done
 
-cp -ar /usr/lib/ld-musl-x86_64.so.1 usr/lib
-cp -ar /usr/lib/libblkid.so* usr/lib
-cp -ar /usr/lib/libc.so usr/lib
-cp -ar /usr/lib/libcrypto* usr/lib
-cp -ar /usr/lib/liblz* usr/lib
-cp -ar /usr/lib/libmount.so* usr/lib
-cp -ar /usr/lib/libskarnet.so* usr/lib
-cp -ar /usr/lib/libterminfo.so usr/lib
-cp -ar /usr/lib/libz.so* usr/lib
-cp -ar /usr/lib/libzstd.so* usr/lib
+cp -a /usr/lib/ld-musl-x86_64.so.1 usr/lib
+cp -a /usr/lib/libblkid.so* usr/lib
+cp -a /usr/lib/libc.so usr/lib
+cp -a /usr/lib/libcrypto* usr/lib
+cp -a /usr/lib/liblz* usr/lib
+cp -a /usr/lib/libmount.so* usr/lib
+cp -a /usr/lib/libskarnet.so* usr/lib
+cp -a /usr/lib/libterminfo.so usr/lib
+cp -a /usr/lib/libz.so* usr/lib
+cp -a /usr/lib/libzstd.so* usr/lib
 
 version="$(uname -r)"
 
@@ -73,10 +75,10 @@ cp -ar $MODD/drivers/virtio $TARGETMOD/drivers
 cp -ar $MODD/fs $TARGETMOD
 cp -ar $MODD/lib $TARGETMOD
 
-cp -ar $MODD/../modules.builtin "/tmp/initramfs/usr/lib/modules/$version"
-cp -ar $MODD/../modules.builtin.modinfo "/tmp/initramfs/usr/lib/modules/$version"
-cp -ar $MODD/../modules.order "/tmp/initramfs/usr/lib/modules/$version"
+cp -a $MODD/../modules.builtin "/tmp/initramfs/usr/lib/modules/$version"
+cp -a $MODD/../modules.builtin.modinfo "/tmp/initramfs/usr/lib/modules/$version"
+cp -a $MODD/../modules.order "/tmp/initramfs/usr/lib/modules/$version"
 
 depmod -b /tmp/initramfs $version
 
-find . | bsdcpio -oH newc | zstd -22 --ultra -T0 --long > ~/initramfs.generated
+find . | bsdcpio -oH newc | zstd -22 --ultra -T0 --long > ~/initramfs
