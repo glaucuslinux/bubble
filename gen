@@ -18,19 +18,21 @@ ln -sfn usr/lib lib
 ln -sfn usr/bin sbin
 ln -sfn bin usr/sbin
 
-cp -a ~/initramfs-generator/init .
+cp -af ~/initramfs-generator/init .
 
-cp -a /etc/mdev.conf etc
+cp -af /etc/group etc
+cp -af /etc/mdev.conf etc
+cp -af /etc/passwd etc
 
-cp -a /usr/bin/bash usr/bin
-cp -a /usr/bin/blkid usr/bin
-cp -a /usr/bin/kill usr/bin
-cp -a /usr/bin/kmod usr/bin
-cp -a /usr/bin/mdevd usr/bin
-cp -a /usr/bin/mdevd-coldplug usr/bin
-cp -a /usr/bin/mount usr/bin
-cp -a /usr/bin/switch_root usr/bin
-cp -a /usr/bin/toybox usr/bin
+cp -af /usr/bin/bash usr/bin
+cp -af /usr/bin/blkid usr/bin
+cp -af /usr/bin/kill usr/bin
+cp -af /usr/bin/kmod usr/bin
+cp -af /usr/bin/mdevd usr/bin
+cp -af /usr/bin/mdevd-coldplug usr/bin
+cp -af /usr/bin/mount usr/bin
+cp -af /usr/bin/switch_root usr/bin
+cp -af /usr/bin/toybox usr/bin
 
 ln -sfn kmod usr/bin/insmod
 ln -sfn kmod usr/bin/lsmod
@@ -39,16 +41,16 @@ ln -sfn bash usr/bin/sh
 
 for i in $(toybox); do ln -sfn toybox /tmp/initramfs/usr/bin/$i; done
 
-cp -a /usr/lib/ld-musl-x86_64.so.1 usr/lib
-cp -a /usr/lib/libblkid.so* usr/lib
-cp -a /usr/lib/libc.so usr/lib
-cp -a /usr/lib/libcrypto* usr/lib
-cp -a /usr/lib/liblz* usr/lib
-cp -a /usr/lib/libmount.so* usr/lib
-cp -a /usr/lib/libskarnet.so* usr/lib
-cp -a /usr/lib/libterminfo.so usr/lib
-cp -a /usr/lib/libz.so* usr/lib
-cp -a /usr/lib/libzstd.so* usr/lib
+cp -af /usr/lib/ld-musl-x86_64.so.1 usr/lib
+cp -af /usr/lib/libblkid.so* usr/lib
+cp -af /usr/lib/libc.so usr/lib
+cp -af /usr/lib/libcrypto* usr/lib
+cp -af /usr/lib/liblz* usr/lib
+cp -af /usr/lib/libmount.so* usr/lib
+cp -af /usr/lib/libskarnet.so* usr/lib
+cp -af /usr/lib/libterminfo.so usr/lib
+cp -af /usr/lib/libz.so* usr/lib
+cp -af /usr/lib/libzstd.so* usr/lib
 
 version="$(uname -r)"
 
@@ -57,27 +59,27 @@ install -d $TARGETMOD/drivers/usb
 
 MODD="/usr/lib/modules/$version/kernel"
 
-cp -ar $MODD/arch $TARGETMOD
-cp -ar $MODD/crypto $TARGETMOD
-cp -ar $MODD/drivers/ata $TARGETMOD/drivers
-cp -ar $MODD/drivers/block $TARGETMOD/drivers
-cp -ar $MODD/drivers/cdrom $TARGETMOD/drivers
-cp -ar $MODD/drivers/hid $TARGETMOD/drivers
-cp -ar $MODD/drivers/hwmon $TARGETMOD/drivers
-cp -ar $MODD/drivers/input $TARGETMOD/drivers
-cp -ar $MODD/drivers/md $TARGETMOD/drivers
-cp -ar $MODD/drivers/message $TARGETMOD/drivers
-cp -ar $MODD/drivers/nvme $TARGETMOD/drivers
-cp -ar $MODD/drivers/scsi $TARGETMOD/drivers
-cp -ar $MODD/drivers/usb/host $TARGETMOD/drivers
-cp -ar $MODD/drivers/usb/storage $TARGETMOD/drivers
-cp -ar $MODD/drivers/virtio $TARGETMOD/drivers
-cp -ar $MODD/fs $TARGETMOD
-cp -ar $MODD/lib $TARGETMOD
+cp -afR $MODD/arch $TARGETMOD
+cp -afR $MODD/crypto $TARGETMOD
+cp -afR $MODD/drivers/ata $TARGETMOD/drivers
+cp -afR $MODD/drivers/block $TARGETMOD/drivers
+cp -afR $MODD/drivers/cdrom $TARGETMOD/drivers
+cp -afR $MODD/drivers/hid $TARGETMOD/drivers
+cp -afR $MODD/drivers/hwmon $TARGETMOD/drivers
+cp -afR $MODD/drivers/input $TARGETMOD/drivers
+cp -afR $MODD/drivers/md $TARGETMOD/drivers
+cp -afR $MODD/drivers/message $TARGETMOD/drivers
+cp -afR $MODD/drivers/nvme $TARGETMOD/drivers
+cp -afR $MODD/drivers/scsi $TARGETMOD/drivers
+cp -afR $MODD/drivers/usb/host $TARGETMOD/drivers
+cp -afR $MODD/drivers/usb/storage $TARGETMOD/drivers
+cp -afR $MODD/drivers/virtio $TARGETMOD/drivers
+cp -afR $MODD/fs $TARGETMOD
+cp -afR $MODD/lib $TARGETMOD
 
-cp -a $MODD/../modules.builtin "/tmp/initramfs/usr/lib/modules/$version"
-cp -a $MODD/../modules.builtin.modinfo "/tmp/initramfs/usr/lib/modules/$version"
-cp -a $MODD/../modules.order "/tmp/initramfs/usr/lib/modules/$version"
+cp -af $MODD/../modules.builtin "/tmp/initramfs/usr/lib/modules/$version"
+cp -af $MODD/../modules.builtin.modinfo "/tmp/initramfs/usr/lib/modules/$version"
+cp -af $MODD/../modules.order "/tmp/initramfs/usr/lib/modules/$version"
 
 depmod -b /tmp/initramfs $version
 
