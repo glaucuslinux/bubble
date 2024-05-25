@@ -9,22 +9,14 @@ mount -t devtmpfs devtmpfs /dev
 mount -t proc proc /proc
 mount -t sysfs sys /sys
 
-modprobe ata_piix
-modprobe atkbd
-modprobe cdrom
-modprobe erofs
-modprobe hfs
-modprobe hfsplus
-modprobe i8042
-modprobe iso9660
 modprobe loop
-modprobe overlay
-modprobe sr_mod
 
 mdevd & mdevd_pid=$!
 mdevd-coldplug
 
 install -d /media/cdrom /media/rootfs-ro /media/rootfs-rw /mnt/root
+
+sleep 3
 
 mount -o ro $(blkid -L glaucus) /media/cdrom
 mount -t erofs /media/cdrom/boot/rootfs /media/rootfs-ro

@@ -1,5 +1,5 @@
-# initramfs-generator
-glaucus initramfs generator
+# bubble
+glaucus live system
 
 ## Community
 * [Discord](https://discord.gg/nDKNmNc)
@@ -9,8 +9,8 @@ glaucus initramfs generator
 * [YouTube](https://www.youtube.com/@glaucuslinux)
 
 ## Mirrors
-* [Codeberg](https://codeberg.org/glaucuslinux/initramfs-generator)
-* [Framagit](https://framagit.org/glaucuslinux/initramfs-generator)
-* [GitHub](https://github.com/glaucuslinux/initramfs-generator)
-* [GitLab](https://gitlab.com/glaucuslinux/initramfs-generator)
-* [SourceHut](https://git.sr.ht/~glaucuslinux/initramfs-generator)
+* [Codeberg](https://codeberg.org/glaucuslinux/bubble)
+* [Framagit](https://framagit.org/glaucuslinux/bubble)
+* [GitHub](https://github.com/glaucuslinux/bubble)
+* [GitLab](https://gitlab.com/glaucuslinux/bubble)
+* [SourceHut](https://git.sr.ht/~glaucuslinux/bubble)

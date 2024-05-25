@@ -18,7 +18,7 @@ ln -sfn usr/lib lib
 ln -sfn usr/bin sbin
 ln -sfn bin usr/sbin
 
-cp -af ~/initramfs-generator/init .
+cp -af ~/bubble/init .
 
 cp -af /etc/group etc
 cp -af /etc/mdev.conf etc
