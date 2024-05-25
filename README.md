@@ -1,5 +1,5 @@
 # bubble
-glaucus live system
+glaucus live
 
 ## Community
 * [Discord](https://discord.gg/nDKNmNc)
