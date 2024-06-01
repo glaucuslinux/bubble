@@ -11,8 +11,7 @@ mount -t sysfs sys /sys
 
 modprobe loop
 
-mdevd & pid=$!
-mdevd-coldplug
+mdevd -C & pid=$!
 
 install -d /media/cdrom /media/rootfs-ro /media/rootfs-rw /mnt/root
 
