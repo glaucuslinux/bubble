@@ -16,9 +16,10 @@ mdevd-coldplug
 
 install -d /media/cdrom /media/rootfs-ro /media/rootfs-rw /mnt/root
 
-sleep 3
+until label=$(blkid -L GLAUCUS) && mount -o ro $label /media/cdrom; do
+  sleep 1
+done
 
-mount -o ro $(blkid -L GLAUCUS) /media/cdrom
 mount -t erofs /media/cdrom/boot/rootfs /media/rootfs-ro
 
 mount -o size=1G -t tmpfs tmpfs /media/rootfs-rw
@@ -33,6 +34,6 @@ mount --move /media/cdrom /mnt/root/mnt/cdrom
 mount --move /media/rootfs-ro /mnt/root/mnt/rootfs-ro
 mount --move /media/rootfs-rw /mnt/root/mnt/rootfs-rw
 
-kill "$mdevd_pid"
+kill $mdevd_pid
 
 exec switch_root /mnt/root /bin/init
