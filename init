@@ -11,7 +11,7 @@ mount -t sysfs sys /sys
 
 modprobe loop
 
-mdevd & mdevd_pid=$!
+mdevd & pid=$!
 mdevd-coldplug
 
 install -d /media/cdrom /media/rootfs-ro /media/rootfs-rw /mnt/root
@@ -34,6 +34,6 @@ mount --move /media/cdrom /mnt/root/mnt/cdrom
 mount --move /media/rootfs-ro /mnt/root/mnt/rootfs-ro
 mount --move /media/rootfs-rw /mnt/root/mnt/rootfs-rw
 
-kill $mdevd_pid
+kill $pid
 
 exec switch_root /mnt/root /bin/init
