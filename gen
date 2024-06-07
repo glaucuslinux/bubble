@@ -3,10 +3,10 @@
 # Copyright (c) 2024, Firas Khalil Khana
 # Distributed under the terms of the ISC License
 
+rm -fr /initramfs
+
 rm -fr /tmp/initramfs
 install -d /tmp/initramfs
-
-rm -fr ~/initramfs
 
 cd /tmp/initramfs
 
@@ -52,35 +52,35 @@ cp -af /usr/lib/libterminfo.so usr/lib
 cp -af /usr/lib/libz.so* usr/lib
 cp -af /usr/lib/libzstd.so* usr/lib
 
-version="$(uname -r)"
+ver="$(uname -r)"
 
-TARGETMOD="/tmp/initramfs/usr/lib/modules/$version/kernel"
-install -d $TARGETMOD/drivers/usb
+TMOD="/tmp/initramfs/usr/lib/modules/$ver/kernel"
+MODD="/usr/lib/modules/$ver/kernel"
 
-MODD="/usr/lib/modules/$version/kernel"
+install -d $TMOD/drivers/usb
 
-cp -afR $MODD/arch $TARGETMOD
-cp -afR $MODD/crypto $TARGETMOD
-cp -afR $MODD/drivers/ata $TARGETMOD/drivers
-cp -afR $MODD/drivers/block $TARGETMOD/drivers
-cp -afR $MODD/drivers/cdrom $TARGETMOD/drivers
-cp -afR $MODD/drivers/hid $TARGETMOD/drivers
-cp -afR $MODD/drivers/hwmon $TARGETMOD/drivers
-cp -afR $MODD/drivers/input $TARGETMOD/drivers
-cp -afR $MODD/drivers/md $TARGETMOD/drivers
-cp -afR $MODD/drivers/message $TARGETMOD/drivers
-cp -afR $MODD/drivers/nvme $TARGETMOD/drivers
-cp -afR $MODD/drivers/scsi $TARGETMOD/drivers
-cp -afR $MODD/drivers/usb/host $TARGETMOD/drivers
-cp -afR $MODD/drivers/usb/storage $TARGETMOD/drivers
-cp -afR $MODD/drivers/virtio $TARGETMOD/drivers
-cp -afR $MODD/fs $TARGETMOD
-cp -afR $MODD/lib $TARGETMOD
+cp -afR $MODD/arch $TMOD
+cp -afR $MODD/crypto $TMOD
+cp -afR $MODD/drivers/ata $TMOD/drivers
+cp -afR $MODD/drivers/block $TMOD/drivers
+cp -afR $MODD/drivers/cdrom $TMOD/drivers
+cp -afR $MODD/drivers/hid $TMOD/drivers
+cp -afR $MODD/drivers/hwmon $TMOD/drivers
+cp -afR $MODD/drivers/input $TMOD/drivers
+cp -afR $MODD/drivers/md $TMOD/drivers
+cp -afR $MODD/drivers/message $TMOD/drivers
+cp -afR $MODD/drivers/nvme $TMOD/drivers
+cp -afR $MODD/drivers/scsi $TMOD/drivers
+cp -afR $MODD/drivers/usb/host $TMOD/drivers
+cp -afR $MODD/drivers/usb/storage $TMOD/drivers
+cp -afR $MODD/drivers/virtio $TMOD/drivers
+cp -afR $MODD/fs $TMOD
+cp -afR $MODD/lib $TMOD
 
-cp -af $MODD/../modules.builtin "/tmp/initramfs/usr/lib/modules/$version"
-cp -af $MODD/../modules.builtin.modinfo "/tmp/initramfs/usr/lib/modules/$version"
-cp -af $MODD/../modules.order "/tmp/initramfs/usr/lib/modules/$version"
+cp -af $MODD/../modules.builtin $TMOD/..
+cp -af $MODD/../modules.builtin.modinfo $TMOD/..
+cp -af $MODD/../modules.order $TMOD/..
 
-depmod -b /tmp/initramfs $version
+depmod -b /tmp/initramfs $ver
 
 find . | bsdcpio -oH newc | zstd -22 --ultra -T0 --long > /initramfs
