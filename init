@@ -11,13 +11,13 @@ mount -t sysfs sys /sys
 
 modprobe loop
 
-mdevd -C & pid=$!
+mdevd -C > /dev/null 2>&1 & pid=$!
 
 until label=$(blkid -L GLAUCUS) && mount -m -o ro $label /media/cdrom; do
   sleep 1
 done
 
-mount -m -t erofs /media/cdrom/boot/rootfs /media/rootfs-ro
+mount -m -t erofs /media/cdrom/rootfs /media/rootfs-ro
 
 mount -m -o size=1G -t tmpfs tmpfs /media/rootfs-rw
 
