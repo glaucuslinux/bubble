@@ -10,7 +10,7 @@ install -d /tmp/initramfs
 
 cd /tmp/initramfs
 
-install -d dev etc run usr/bin usr/lib var
+install -d etc run usr/bin usr/lib var
 install -dm 555 proc sys
 
 ln -sfn usr/bin bin
