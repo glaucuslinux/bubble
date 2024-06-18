@@ -64,6 +64,7 @@ cp -afR $MODD/crypto $TMOD
 cp -afR $MODD/drivers/ata $TMOD/drivers
 cp -afR $MODD/drivers/block $TMOD/drivers
 cp -afR $MODD/drivers/cdrom $TMOD/drivers
+cp -afR $MODD/drivers/gpu $TMOD/drivers
 cp -afR $MODD/drivers/hid $TMOD/drivers
 cp -afR $MODD/drivers/hwmon $TMOD/drivers
 cp -afR $MODD/drivers/input $TMOD/drivers
