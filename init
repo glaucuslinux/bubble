@@ -17,17 +17,17 @@ until label=$(blkid -L GLAUCUS) && mount -m -o ro $label /media/cdrom; do
   sleep 1
 done
 
-mount -m -t erofs /media/cdrom/rootfs /media/rootfs-ro
+mount -m -t erofs /media/cdrom/fs /media/fs-ro
 
-mount -m -o size=1G -t tmpfs tmpfs /media/rootfs-rw
+mount -m -o size=1G -t tmpfs tmpfs /media/fs-rw
 
-install -d /media/rootfs-rw/upper /media/rootfs-rw/work
+install -d /media/fs-rw/upper /media/fs-rw/work
 
-mount -m -o lowerdir=/media/rootfs-ro,upperdir=/media/rootfs-rw/upper,workdir=/media/rootfs-rw/work -t overlay overlay /mnt/root
+mount -m -o lowerdir=/media/fs-ro,upperdir=/media/fs-rw/upper,workdir=/media/fs-rw/work -t overlay overlay /mnt/root
 
 mount -M -m /media/cdrom /mnt/root/mnt/cdrom
-mount -M -m /media/rootfs-ro /mnt/root/mnt/rootfs-ro
-mount -M -m /media/rootfs-rw /mnt/root/mnt/rootfs-rw
+mount -M -m /media/fs-ro /mnt/root/mnt/fs-ro
+mount -M -m /media/fs-rw /mnt/root/mnt/fs-rw
 
 kill $pid
 
