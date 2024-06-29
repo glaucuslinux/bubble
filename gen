@@ -6,12 +6,12 @@
 rm -fr /initramfs
 
 rm -fr /tmp/initramfs
-install -d /tmp/initramfs
+mkdir -p /tmp/initramfs
 
 cd /tmp/initramfs
 
-install -d etc run usr/bin usr/lib var
-install -dm 555 proc sys
+mkdir -p etc run usr/bin usr/lib var
+mkdir -pm 555 proc sys
 
 ln -sfn usr/bin bin
 ln -sfn usr/lib lib
@@ -57,7 +57,7 @@ ver="$(uname -r)"
 TMOD="/tmp/initramfs/usr/lib/modules/$ver/kernel"
 MODD="/usr/lib/modules/$ver/kernel"
 
-install -d $TMOD/drivers/usb
+mkdir -p $TMOD/drivers/usb
 
 cp -afR $MODD/arch $TMOD
 cp -afR $MODD/crypto $TMOD
