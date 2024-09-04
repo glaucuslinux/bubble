@@ -10,7 +10,6 @@ glaucus live system
 
 ## Mirrors
 - [Codeberg](https://codeberg.org/glaucuslinux/bubble)
-- [Framagit](https://framagit.org/glaucuslinux/bubble)
 - [GitHub](https://github.com/glaucuslinux/bubble)
 - [GitLab](https://gitlab.com/glaucuslinux/bubble)
 - [SourceHut](https://git.sr.ht/~glaucuslinux/bubble)
