@@ -1,0 +1,61 @@
+#!/bin/sh
+
+# Copyright (c) 2024, Firas Khalil Khana
+# Distributed under the terms of the ISC License
+
+if [ $(id -u) -ne 0 ]; then
+  echo "permission denied";
+  exit 1;
+fi
+
+img="../glaucus-s6-x86-64-v3-$(date +"%Y%m%d").img"
+
+device=$(losetup -fv)
+partitionOne=${device}p1
+partitionTwo=${device}p2
+
+path=/mnt/glaucus
+
+dd bs=1M count=16384 if=/dev/zero of=$img
+
+parted -s $img mklabel gpt
+parted -s $img mkpart ESP fat32 1 65
+parted -s $img set 1 esp on
+parted -s $img mkpart ext4 65 16384
+
+modprobe loop
+
+losetup -Dv
+losetup -v $device $img
+partx -av $device
+
+mkfs.fat -F 32 $partitionOne
+mke2fs -t ext4 $partitionTwo
+
+mkdir -pv $path
+
+mount $partitionTwo $path
+
+cp -afTv ../cross $path
+# cp -afv ../src $path/var/cache/rad
+
+mount $partitionOne $path/boot
+
+booster -v build --force --compression=zstd --config=/var/lib/rad/clusters/cerata/booster/booster.yaml --universal --strip $path/boot/initramfs
+
+cp -afv /var/lib/rad/clusters/cerata/limine/limine.conf.img $path/boot/limine.conf
+cp -afv /boot/vmlinuz-linux-cachyos $path/boot/vmlinuz
+
+mkdir -pv $path/boot/EFI/BOOT
+cp -afv /usr/share/limine/BOOTX64.EFI $path/boot/EFI/BOOT
+
+chown -Rv 0:0 $path
+chown -Rv 20:20 $path/var/log/wtmpd
+
+umount -fRv $path/boot
+umount -fRv $path
+
+partx -dv $partitionOne
+partx -dv $partitionTwo
+
+losetup -dv $device

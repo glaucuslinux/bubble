@@ -1,0 +1,69 @@
+#!/bin/sh
+
+# Copyright (c) 2024, Firas Khalil Khana
+# Distributed under the terms of the ISC License
+
+if [ $(id -u) -ne 0 ]; then
+  echo "permission denied";
+  exit 1;
+fi
+
+iso="../glaucus-s6-x86-64-v3-$(date +"%Y%m%d").iso"
+
+path="../iso"
+
+rm -frv $path
+
+mkdir -pv \
+  $path/EFI/BOOT \
+  $path/limine \
+  $path/tmp
+
+cp -afv ../initramfs $path
+
+cp -afv /var/lib/rad/clusters/cerata/limine/limine.conf.iso $path/limine/limine.conf
+
+cp -afv /usr/share/limine/BOOTX64.EFI $path/EFI/BOOT
+cp -afv \
+  /usr/share/limine/limine-bios.sys \
+  /usr/share/limine/limine-bios-cd.bin \
+  /usr/share/limine/limine-uefi-cd.bin \
+  $path/limine
+
+cp -afv /boot/vmlinuz-linux-cachyos $path/vmlinuz
+
+rad -ci skel
+
+rm -frv $path/tmp/boot
+
+chown -Rv 0:0 $path
+chown -Rv 20:20 $path/tmp/var/log/wtmpd
+
+mkfs.erofs $path/fs $path/tmp
+
+rm -frv $path/tmp
+
+xorriso \
+  -as mkisofs \
+  -o $iso \
+  -iso-level 3 \
+  -l \
+  -r \
+  -J \
+  -joliet-long \
+  -hfsplus \
+  -apm-block-size 2048 \
+  -V GLAUCUS \
+  -P glaucus \
+  -A glaucus \
+  -p glaucus \
+  -b limine/limine-bios-cd.bin \
+  -boot-load-size 4 \
+  -no-emul-boot \
+  -boot-info-table \
+  --efi-boot limine/limine-uefi-cd.bin \
+  --protective-msdos-label \
+  -efi-boot-part \
+  --efi-boot-image \
+  -vv \
+  $path
