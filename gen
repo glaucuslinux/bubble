@@ -3,85 +3,101 @@
 # Copyright (c) 2024, Firas Khalil Khana
 # Distributed under the terms of the ISC License
 
-rm -fr /initramfs
+ver="$(uname -r)"
 
-rm -fr /tmp/initramfs
-mkdir -p /tmp/initramfs
+MODD=/usr/lib/modules/"$ver"/kernel
+TMPD=/var/tmp/rad/initramfs
 
-cd /tmp/initramfs
+rm -fr \
+  /initramfs \
+  "$TMPD"
 
-mkdir -p etc run usr/bin usr/lib var
-mkdir -pm 555 proc sys
+mkdir -p "$TMPD"
+cd "$TMPD"
 
-ln -sfn usr/bin bin
-ln -sfn usr/lib lib
-ln -sfn usr/bin sbin
-ln -sfn bin usr/sbin
+mkdir -p \
+  etc \
+  run \
+  usr/bin \
+  usr/lib \
+  var
+mkdir -pm 555 \
+  proc \
+  sys
+
+ln -fns usr/bin bin
+ln -fns usr/lib lib
+ln -fns usr/bin sbin
+ln -fns bin usr/sbin
 
 cp -af /bubble/init .
 
-cp -af /etc/group etc
-cp -af /etc/mdev.conf etc
-cp -af /etc/passwd etc
+cp -af \
+  /etc/group \
+  /etc/mdev.conf \
+  /etc/passwd \
+  etc
 
-cp -af /usr/bin/bash usr/bin
-cp -af /usr/bin/blkid usr/bin
-cp -af /usr/bin/kill usr/bin
-cp -af /usr/bin/kmod usr/bin
-cp -af /usr/bin/mdevd usr/bin
-cp -af /usr/bin/mdevd-coldplug usr/bin
-cp -af /usr/bin/mount usr/bin
-cp -af /usr/bin/switch_root usr/bin
-cp -af /usr/bin/toybox usr/bin
+cp -af \
+  /usr/bin/bash \
+  /usr/bin/blkid \
+  /usr/bin/mdevd \
+  /usr/bin/mdevd-coldplug \
+  /usr/bin/mount \
+  /usr/bin/toybox \
+  usr/bin
 
-ln -sfn kmod usr/bin/insmod
-ln -sfn kmod usr/bin/lsmod
-ln -sfn kmod usr/bin/modprobe
-ln -sfn bash usr/bin/sh
+ln -fns bash usr/bin/sh
 
-for i in $(toybox); do ln -sfn toybox /tmp/initramfs/usr/bin/$i; done
+for i in $(toybox); do ln -fns toybox "$TMPD"/usr/bin/$i; done
 
-cp -af /usr/lib/ld-musl-x86_64.so.1 usr/lib
-cp -af /usr/lib/libblkid.so* usr/lib
-cp -af /usr/lib/libc.so usr/lib
-cp -af /usr/lib/libcrypto* usr/lib
-cp -af /usr/lib/liblz* usr/lib
-cp -af /usr/lib/libmount.so* usr/lib
-cp -af /usr/lib/libskarnet.so* usr/lib
-cp -af /usr/lib/libterminfo.so usr/lib
-cp -af /usr/lib/libz.so* usr/lib
-cp -af /usr/lib/libzstd.so* usr/lib
+cp -af \
+  /usr/lib/ld-musl-x86_64.so.1 \
+  /usr/lib/libblkid.so* \
+  /usr/lib/libc.so \
+  /usr/lib/libcrypto* \
+  /usr/lib/libmount.so* \
+  /usr/lib/libnsss.so* \
+  /usr/lib/libskarnet.so* \
+  /usr/lib/libterminfo.so \
+  /usr/lib/libutmps.so* \
+  usr/lib
 
-ver="$(uname -r)"
+mkdir -p "$TMPD"/usr/lib/modules/"$ver"/kernel/drivers/usb
 
-TMOD="/tmp/initramfs/usr/lib/modules/$ver/kernel"
-MODD="/usr/lib/modules/$ver/kernel"
+cp -af \
+  "$MODD"/arch \
+  "$MODD"/crypto \
+  "$TMPD"/usr/lib/modules/"$ver"/kernel
 
-mkdir -p $TMOD/drivers/usb
+cp -af \
+  "$MODD"/drivers/ata \
+  "$MODD"/drivers/block \
+  "$MODD"/drivers/cdrom \
+  "$MODD"/drivers/gpu \
+  "$MODD"/drivers/hid \
+  "$MODD"/drivers/hwmon \
+  "$MODD"/drivers/input \
+  "$MODD"/drivers/md \
+  "$MODD"/drivers/message \
+  "$MODD"/drivers/nvme \
+  "$MODD"/drivers/scsi \
+  "$MODD"/drivers/usb/host \
+  "$MODD"/drivers/usb/storage \
+  "$MODD"/drivers/virtio \
+  "$TMPD"/usr/lib/modules/"$ver"/kernel/drivers
 
-cp -afR $MODD/arch $TMOD
-cp -afR $MODD/crypto $TMOD
-cp -afR $MODD/drivers/ata $TMOD/drivers
-cp -afR $MODD/drivers/block $TMOD/drivers
-cp -afR $MODD/drivers/cdrom $TMOD/drivers
-cp -afR $MODD/drivers/gpu $TMOD/drivers
-cp -afR $MODD/drivers/hid $TMOD/drivers
-cp -afR $MODD/drivers/hwmon $TMOD/drivers
-cp -afR $MODD/drivers/input $TMOD/drivers
-cp -afR $MODD/drivers/md $TMOD/drivers
-cp -afR $MODD/drivers/message $TMOD/drivers
-cp -afR $MODD/drivers/nvme $TMOD/drivers
-cp -afR $MODD/drivers/scsi $TMOD/drivers
-cp -afR $MODD/drivers/usb/host $TMOD/drivers
-cp -afR $MODD/drivers/usb/storage $TMOD/drivers
-cp -afR $MODD/drivers/virtio $TMOD/drivers
-cp -afR $MODD/fs $TMOD
-cp -afR $MODD/lib $TMOD
+cp -af \
+  "$MODD"/fs \
+  "$MODD"/lib \
+  "$TMPD"/usr/lib/modules/"$ver"/kernel
 
-cp -af $MODD/../modules.builtin $TMOD/..
-cp -af $MODD/../modules.builtin.modinfo $TMOD/..
-cp -af $MODD/../modules.order $TMOD/..
+cp -af \
+  "$MODD"/../modules.builtin \
+  "$MODD"/../modules.builtin.modinfo \
+  "$MODD"/../modules.order \
+  "$TMPD"/usr/lib/modules/"$ver"/kernel/..
 
-depmod -b /tmp/initramfs $ver
+depmod -b "$TMPD" "$ver"
 
-find . | bsdcpio -oH newc | zstd -22 --ultra -T0 --long > /initramfs
+find . | cpio -o | zstd -22 --ultra -T0 --long > /initramfs

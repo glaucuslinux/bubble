@@ -21,7 +21,9 @@ mount -m -t erofs /media/cdrom/fs /media/fs-ro
 
 mount -m -o size=1G -t tmpfs tmpfs /media/fs-rw
 
-mkdir -p /media/fs-rw/upper /media/fs-rw/work
+mkdir -p \
+  /media/fs-rw/upper \
+  /media/fs-rw/work
 
 mount -m -o lowerdir=/media/fs-ro,upperdir=/media/fs-rw/upper,workdir=/media/fs-rw/work -t overlay overlay /mnt/root
 
