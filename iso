@@ -11,6 +11,7 @@ fi
 iso="../glaucus-s6-x86-64-v3-$(date +"%Y%m%d").iso"
 
 rm -frv ../iso
+
 mkdir -pv \
   ../iso/EFI/BOOT \
   ../iso/limine \

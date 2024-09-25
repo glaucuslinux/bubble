@@ -3,24 +3,26 @@
 # Copyright (c) 2024, Firas Khalil Khana
 # Distributed under the terms of the ISC License
 
-ver="$(uname -r)"
+ver=$(uname -r)
 
-MODD=/usr/lib/modules/"$ver"/kernel
-TMPD=/var/tmp/rad/initramfs
+CERD=/var/lib/rad/clusters/cerata
+MODD=/usr/lib/modules/$ver/kernel
 
 rm -fr \
-  /initramfs \
-  "$TMPD"
+  ../gen \
+  ../initramfs
 
-mkdir -p "$TMPD"
-cd "$TMPD"
+rm -fr ../gen
+mkdir -p ../gen
+cd ../gen
 
 mkdir -p \
   etc \
   run \
   usr/bin \
-  usr/lib \
+  usr/lib/modules/$ver/kernel/drivers/usb \
   var
+
 mkdir -pm 555 \
   proc \
   sys
@@ -30,12 +32,12 @@ ln -fns usr/lib lib
 ln -fns usr/bin sbin
 ln -fns bin usr/sbin
 
-cp -af /bubble/init .
+cp -af ../bubble/init .
 
 cp -af \
-  /etc/group \
-  /etc/mdev.conf \
-  /etc/passwd \
+  "$CERD"/fs/group \
+  "$CERD"/fs/mdev.conf \
+  "$CERD"/fs/passwd \
   etc
 
 cp -af \
@@ -49,7 +51,9 @@ cp -af \
 
 ln -fns bash usr/bin/sh
 
-for i in $(toybox); do ln -fns toybox "$TMPD"/usr/bin/$i; done
+for i in $(toybox); do
+  ln -fns toybox usr/bin/$i
+done
 
 cp -af \
   /usr/lib/ld-musl-x86_64.so.1 \
@@ -57,18 +61,17 @@ cp -af \
   /usr/lib/libc.so \
   /usr/lib/libcrypto* \
   /usr/lib/libmount.so* \
-  /usr/lib/libnsss.so* \
   /usr/lib/libskarnet.so* \
   /usr/lib/libterminfo.so \
   /usr/lib/libutmps.so* \
   usr/lib
 
-mkdir -p "$TMPD"/usr/lib/modules/"$ver"/kernel/drivers/usb
-
 cp -af \
   "$MODD"/arch \
   "$MODD"/crypto \
-  "$TMPD"/usr/lib/modules/"$ver"/kernel
+  "$MODD"/fs \
+  "$MODD"/lib \
+  usr/lib/modules/$ver/kernel
 
 cp -af \
   "$MODD"/drivers/ata \
@@ -85,19 +88,18 @@ cp -af \
   "$MODD"/drivers/usb/host \
   "$MODD"/drivers/usb/storage \
   "$MODD"/drivers/virtio \
-  "$TMPD"/usr/lib/modules/"$ver"/kernel/drivers
-
-cp -af \
-  "$MODD"/fs \
-  "$MODD"/lib \
-  "$TMPD"/usr/lib/modules/"$ver"/kernel
+  usr/lib/modules/$ver/kernel/drivers
 
 cp -af \
   "$MODD"/../modules.builtin \
   "$MODD"/../modules.builtin.modinfo \
   "$MODD"/../modules.order \
-  "$TMPD"/usr/lib/modules/"$ver"/kernel/..
+  usr/lib/modules/$ver
 
-depmod -b "$TMPD" "$ver"
+depmod -b . $ver
 
-find . | cpio -o | zstd -22 --ultra -T0 --long > /initramfs
+find . | cpio -o | zstd -22 --ultra -T0 --long > ../initramfs
+
+cd ../bubble
+
+rm -fr ../gen
