@@ -4,17 +4,16 @@
 # Distributed under the terms of the ISC License
 
 if [ $(id -u) -ne 0 ]; then
-  echo "permission denied";
-  exit 1;
+  echo "permission denied"
+  exit 1
 fi
 
 img="../glaucus-s6-x86-64-v3-$(date +"%Y%m%d").img"
+ver=6.10.6-3-cachyos
 
-device=$(losetup -fv)
+device=$(losetup -f)
 partitionOne=${device}p1
 partitionTwo=${device}p2
-
-path=/mnt/glaucus
 
 dd bs=1M count=16384 if=/dev/zero of=$img
 
@@ -32,30 +31,45 @@ partx -av $device
 mkfs.fat -F 32 $partitionOne
 mke2fs -t ext4 $partitionTwo
 
-mkdir -pv $path
+rm -fr ../img
+mkdir -pv ../img
 
-mount $partitionTwo $path
+mount $partitionTwo ../img
 
-cp -afTv ../cross $path
-# cp -afv ../src $path/var/cache/rad
+cp -afT ../cross ../img
+cp -af ../src ../img/var/cache/rad
 
-mount $partitionOne $path/boot
+mount $partitionOne ../img/boot
 
-booster -v build --force --compression=zstd --config=/var/lib/rad/clusters/cerata/booster/booster.yaml --universal --strip $path/boot/initramfs
+depmod -b ../img $ver
 
-cp -afv /var/lib/rad/clusters/cerata/limine/limine.conf.img $path/boot/limine.conf
-cp -afv /boot/vmlinuz-linux-cachyos $path/boot/vmlinuz
+booster \
+  -v \
+  build \
+  --force \
+  --compression=zstd \
+  --kernel-version=$ver \
+  --modules-dir=../img/usr/lib/modules/$ver \
+  --config=../cerata/booster/booster.yaml \
+  --universal \
+  --strip \
+  ../img/boot/initramfs
 
-mkdir -pv $path/boot/EFI/BOOT
-cp -afv /usr/share/limine/BOOTX64.EFI $path/boot/EFI/BOOT
+cp -afv ../cerata/limine/limine.conf.img ../img/boot/limine.conf
+cp -afv ../cross/boot/vmlinuz ../img/boot
 
-chown -Rv 0:0 $path
-chown -Rv 20:20 $path/var/log/wtmpd
+mkdir -pv ../img/boot/EFI/BOOT
+cp -afv /usr/share/limine/BOOTX64.EFI ../img/boot/EFI/BOOT
 
-umount -fRv $path/boot
-umount -fRv $path
+chown -R 0:0 ../img
+chown -Rv 20:20 ../img/var/log/wtmpd
+
+umount -fRv ../img/boot
+umount -fRv ../img
 
 partx -dv $partitionOne
 partx -dv $partitionTwo
 
-losetup -dv $device
+losetup -d $device
+
+rm -fr ../img
