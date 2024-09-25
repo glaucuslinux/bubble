@@ -11,6 +11,8 @@ fi
 img="../glaucus-s6-x86-64-v3-$(date +"%Y%m%d").img"
 ver=6.10.6-3-cachyos
 
+IMGD=../img
+
 dd bs=1M count=16384 if=/dev/zero of=$img
 
 parted -s $img mklabel gpt
@@ -32,17 +34,17 @@ partx -av $device
 mkfs.fat -F 32 $partitionOne
 mke2fs -t ext4 $partitionTwo
 
-rm -fr ../img
-mkdir -pv ../img
+rm -fr "$IMGD"
+mkdir -pv "$IMGD"
 
-mount $partitionTwo ../img
+mount $partitionTwo "$IMGD"
 
-cp -afT ../cross ../img
-cp -af ../src ../img/var/cache/rad
+cp -afT ../cross "$IMGD"
+cp -af ../src "$IMGD"/var/cache/rad
 
-mount $partitionOne ../img/boot
+mount $partitionOne "$IMGD"/boot
 
-depmod -b ../img $ver
+depmod -b "$IMGD" $ver
 
 booster \
   -v \
@@ -50,27 +52,29 @@ booster \
   --force \
   --compression=zstd \
   --kernel-version=$ver \
-  --modules-dir=../img/usr/lib/modules/$ver \
+  --modules-dir="$IMGD"/usr/lib/modules/$ver \
   --config=../cerata/booster/booster.yaml \
   --universal \
   --strip \
-  ../img/boot/initramfs
+  "$IMGD"/boot/initramfs
 
-cp -afv ../cerata/limine/limine.conf.img ../img/boot/limine.conf
-cp -afv ../cross/boot/vmlinuz ../img/boot
+cp -afv ../cerata/limine/limine.conf.img "$IMGD"/boot/limine.conf
+cp -afv ../cross/boot/vmlinuz "$IMGD"/boot
 
-mkdir -pv ../img/boot/EFI/BOOT
-cp -afv /usr/share/limine/BOOTX64.EFI ../img/boot/EFI/BOOT
+mkdir -pv "$IMGD"/boot/EFI/BOOT
+cp -afv /usr/share/limine/BOOTX64.EFI "$IMGD"/boot/EFI/BOOT
 
-chown -R 0:0 ../img
-chown -Rv 20:20 ../img/var/log/wtmpd
+chown -R 0:0 "$IMGD"
+chown -Rv 20:20 "$IMGD"/var/log/wtmpd
 
-umount -fRv ../img/boot
-umount -fRv ../img
+umount -fRv "$IMGD"/boot
+umount -fRv "$IMGD"
 
 partx -dv $partitionOne
 partx -dv $partitionTwo
 
 losetup -d $device
 
-rm -fr ../img
+rm -fr "$IMGD"
+
+echo "img complete"

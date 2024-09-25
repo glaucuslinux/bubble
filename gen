@@ -6,15 +6,16 @@
 ver=$(uname -r)
 
 CERD=/var/lib/rad/clusters/cerata
+GEND=../gen
 MODD=/usr/lib/modules/$ver/kernel
 
 rm -fr \
-  ../gen \
+  "$GEND" \
   ../initramfs
 
-rm -fr ../gen
-mkdir -p ../gen
-cd ../gen
+rm -fr "$GEND"
+mkdir -p "$GEND"
+cd "$GEND"
 
 mkdir -p \
   etc \
@@ -102,4 +103,6 @@ find . | cpio -o | zstd -22 --ultra -T0 --long > ../initramfs
 
 cd ../bubble
 
-rm -fr ../gen
+rm -fr "$GEND"
+
+echo "gen complete"

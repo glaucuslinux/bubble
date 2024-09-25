@@ -10,36 +10,38 @@ fi
 
 iso="../glaucus-s6-x86-64-v3-$(date +"%Y%m%d").iso"
 
-rm -frv ../iso
+ISOD=../iso
+
+rm -frv "$ISOD"
 
 mkdir -pv \
-  ../iso/EFI/BOOT \
-  ../iso/limine \
-  ../iso/tmp
+  "$ISOD"/EFI/BOOT \
+  "$ISOD"/limine \
+  "$ISOD"/tmp
 
 cp -afv \
   ../initramfs \
   ../cross/usr/lib/modules/6.10.6-3-cachyos/vmlinuz \
-  ../iso
+  "$ISOD"
 
-cp -afv /usr/share/limine/BOOTX64.EFI ../iso/EFI/BOOT
-cp -afv ../cerata/limine/limine.conf.iso ../iso/limine/limine.conf
+cp -afv /usr/share/limine/BOOTX64.EFI "$ISOD"/EFI/BOOT
+cp -afv ../cerata/limine/limine.conf.iso "$ISOD"/limine/limine.conf
 cp -afv \
   /usr/share/limine/limine-bios.sys \
   /usr/share/limine/limine-bios-cd.bin \
   /usr/share/limine/limine-uefi-cd.bin \
-  ../iso/limine
+  "$ISOD"/limine
 
 ../rad/rad -ci skel
 
-rm -frv ../iso/tmp/boot
+rm -frv "$ISOD"/tmp/boot
 
-chown -R 0:0 ../iso
-chown -Rv 20:20 ../iso/tmp/var/log/wtmpd
+chown -R 0:0 "$ISOD"
+chown -Rv 20:20 "$ISOD"/tmp/var/log/wtmpd
 
-mkfs.erofs ../iso/fs ../iso/tmp
+mkfs.erofs "$ISOD"/fs "$ISOD"/tmp
 
-rm -fr ../iso/tmp
+rm -fr "$ISOD"/tmp
 
 xorriso \
   -as mkisofs \
@@ -64,8 +66,10 @@ xorriso \
   -efi-boot-part \
   --efi-boot-image \
   -vv \
-  ../iso
+  "$ISOD"
 
-rm -fr ../iso
+rm -fr "$ISOD"
 
 limine bios-install $iso
+
+echo "iso complete"
