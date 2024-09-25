@@ -22,20 +22,20 @@ parted -s $img mkpart ext4 65 16384
 
 modprobe loop
 
-losetup -Dv
+losetup -D
 
 device=$(losetup -f)
 partitionOne=${device}p1
 partitionTwo=${device}p2
 
-losetup -v $device $img
-partx -av $device
+losetup $device $img
+partx -a $device
 
 mkfs.fat -F 32 $partitionOne
 mke2fs -t ext4 $partitionTwo
 
 rm -fr "$IMGD"
-mkdir -pv "$IMGD"
+mkdir -p "$IMGD"
 
 mount $partitionTwo "$IMGD"
 
@@ -47,7 +47,6 @@ mount $partitionOne "$IMGD"/boot
 depmod -b "$IMGD" $ver
 
 booster \
-  -v \
   build \
   --force \
   --compression=zstd \
@@ -58,20 +57,20 @@ booster \
   --strip \
   "$IMGD"/boot/initramfs
 
-cp -afv ../cerata/limine/limine.conf.img "$IMGD"/boot/limine.conf
-cp -afv ../cross/boot/vmlinuz "$IMGD"/boot
+cp -af ../cerata/limine/limine.conf.img "$IMGD"/boot/limine.conf
+cp -af ../cross/boot/vmlinuz "$IMGD"/boot
 
-mkdir -pv "$IMGD"/boot/EFI/BOOT
-cp -afv /usr/share/limine/BOOTX64.EFI "$IMGD"/boot/EFI/BOOT
+mkdir -p "$IMGD"/boot/EFI/BOOT
+cp -af /usr/share/limine/BOOTX64.EFI "$IMGD"/boot/EFI/BOOT
 
 chown -R 0:0 "$IMGD"
-chown -Rv 20:20 "$IMGD"/var/log/wtmpd
+chown -R 20:20 "$IMGD"/var/log/wtmpd
 
-umount -fRv "$IMGD"/boot
-umount -fRv "$IMGD"
+umount -fR "$IMGD"/boot
+umount -fR "$IMGD"
 
-partx -dv $partitionOne
-partx -dv $partitionTwo
+partx -d $partitionOne
+partx -d $partitionTwo
 
 losetup -d $device
 

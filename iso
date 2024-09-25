@@ -12,21 +12,21 @@ iso="../glaucus-s6-x86-64-v3-$(date +"%Y%m%d").iso"
 
 ISOD=../iso
 
-rm -frv "$ISOD"
+rm -fr "$ISOD"
 
-mkdir -pv \
+mkdir -p \
   "$ISOD"/EFI/BOOT \
   "$ISOD"/limine \
   "$ISOD"/tmp
 
-cp -afv \
+cp -af \
   ../initramfs \
   ../cross/usr/lib/modules/6.10.6-3-cachyos/vmlinuz \
   "$ISOD"
 
-cp -afv /usr/share/limine/BOOTX64.EFI "$ISOD"/EFI/BOOT
-cp -afv ../cerata/limine/limine.conf.iso "$ISOD"/limine/limine.conf
-cp -afv \
+cp -af /usr/share/limine/BOOTX64.EFI "$ISOD"/EFI/BOOT
+cp -af ../cerata/limine/limine.conf.iso "$ISOD"/limine/limine.conf
+cp -af \
   /usr/share/limine/limine-bios.sys \
   /usr/share/limine/limine-bios-cd.bin \
   /usr/share/limine/limine-uefi-cd.bin \
@@ -34,10 +34,10 @@ cp -afv \
 
 ../rad/rad -ci skel
 
-rm -frv "$ISOD"/tmp/boot
+rm -fr "$ISOD"/tmp/boot
 
 chown -R 0:0 "$ISOD"
-chown -Rv 20:20 "$ISOD"/tmp/var/log/wtmpd
+chown -R 20:20 "$ISOD"/tmp/var/log/wtmpd
 
 mkfs.erofs "$ISOD"/fs "$ISOD"/tmp
 
@@ -65,7 +65,6 @@ xorriso \
   --protective-msdos-label \
   -efi-boot-part \
   --efi-boot-image \
-  -vv \
   "$ISOD"
 
 rm -fr "$ISOD"
