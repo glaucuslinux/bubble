@@ -11,10 +11,6 @@ fi
 img="../glaucus-s6-x86-64-v3-$(date +"%Y%m%d").img"
 ver=6.10.6-3-cachyos
 
-device=$(losetup -f)
-partitionOne=${device}p1
-partitionTwo=${device}p2
-
 dd bs=1M count=16384 if=/dev/zero of=$img
 
 parted -s $img mklabel gpt
@@ -25,6 +21,11 @@ parted -s $img mkpart ext4 65 16384
 modprobe loop
 
 losetup -Dv
+
+device=$(losetup -f)
+partitionOne=${device}p1
+partitionTwo=${device}p2
+
 losetup -v $device $img
 partx -av $device
 
