@@ -67,8 +67,8 @@ xorriso \
   --efi-boot-image \
   "$ISOD"
 
-rm -fr "$ISOD"
-
 limine bios-install $iso
+
+rm -fr "$ISOD"
 
 echo "iso complete"
