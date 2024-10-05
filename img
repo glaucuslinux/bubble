@@ -13,12 +13,12 @@ ver=6.10.6-3-cachyos
 
 IMGD=../img
 
-dd bs=1M count=8192 if=/dev/zero of=$img
+dd bs=1M count=10240 if=/dev/zero of=$img
 
 parted -s $img mklabel gpt
 parted -s $img mkpart ESP fat32 1 65
 parted -s $img set 1 esp on
-parted -s $img mkpart ext4 65 8192
+parted -s $img mkpart ext4 65 10240
 
 modprobe loop
 
