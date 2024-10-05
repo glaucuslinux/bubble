@@ -11,6 +11,7 @@ fi
 iso="../glaucus-s6-x86-64-v3-$(date +"%Y%m%d").iso"
 
 ISOD=../iso
+PKGD=../pkg/skel
 
 rm -fr "$ISOD"
 
@@ -21,18 +22,20 @@ mkdir -p \
 
 cp -af \
   ../initramfs \
-  ../cross/usr/lib/modules/6.10.6-3-cachyos/vmlinuz \
+  ../cross/boot/vmlinuz \
   "$ISOD"
 
 cp -af /usr/share/limine/BOOTX64.EFI "$ISOD"/EFI/BOOT
-cp -af ../cerata/limine/limine.conf.iso "$ISOD"/limine/limine.conf
+cp -af ../cerata/limine/limine.conf "$ISOD"/limine
 cp -af \
   /usr/share/limine/limine-bios.sys \
   /usr/share/limine/limine-bios-cd.bin \
   /usr/share/limine/limine-uefi-cd.bin \
   "$ISOD"/limine
 
-../rad/rad -ci skel
+for i in $(ls "$PKGD"); do
+  bsdtar -xmPf "$PKGD"/$i/*.tar.zst -C "$ISOD"/tmp
+done
 
 rm -fr "$ISOD"/tmp/boot
 

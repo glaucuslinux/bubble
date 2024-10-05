@@ -33,23 +33,27 @@ ln -fns usr/lib lib
 ln -fns usr/bin sbin
 ln -fns bin usr/sbin
 
-cp -af ../bubble/init .
+cp -af /bubble/init .
 
 cp -af \
   "$CERD"/fs/group \
-  "$CERD"/fs/mdev.conf \
   "$CERD"/fs/passwd \
+  "$CERD"/mdevd/mdev.conf \
   etc
 
 cp -af \
   /usr/bin/bash \
   /usr/bin/blkid \
+  /usr/bin/kill \
+  /usr/bin/kmod \
   /usr/bin/mdevd \
   /usr/bin/mdevd-coldplug \
   /usr/bin/mount \
+  /usr/bin/switch_root \
   /usr/bin/toybox \
   usr/bin
 
+ln -fns kmod usr/bin/modprobe
 ln -fns bash usr/bin/sh
 
 for i in $(toybox); do
@@ -60,11 +64,14 @@ cp -af \
   /usr/lib/ld-musl-x86_64.so.1 \
   /usr/lib/libblkid.so* \
   /usr/lib/libc.so \
-  /usr/lib/libcrypto* \
+  /usr/lib/libcrypto.so* \
+  /usr/lib/liblzma.so* \
   /usr/lib/libmount.so* \
   /usr/lib/libskarnet.so* \
   /usr/lib/libterminfo.so \
   /usr/lib/libutmps.so* \
+  /usr/lib/libz.so* \
+  /usr/lib/libzstd.so* \
   usr/lib
 
 cp -af \
