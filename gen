@@ -42,7 +42,6 @@ cp -af \
   etc
 
 cp -af \
-  /usr/bin/bash \
   /usr/bin/blkid \
   /usr/bin/kill \
   /usr/bin/kmod \
@@ -51,10 +50,11 @@ cp -af \
   /usr/bin/mount \
   /usr/bin/switch_root \
   /usr/bin/toybox \
+  /usr/bin/yash \
   usr/bin
 
 ln -fns kmod usr/bin/modprobe
-ln -fns bash usr/bin/sh
+ln -fns yash usr/bin/sh
 
 for i in $(toybox); do
   ln -fns toybox usr/bin/$i
