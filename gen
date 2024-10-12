@@ -33,7 +33,7 @@ ln -fns usr/lib lib
 ln -fns usr/bin sbin
 ln -fns bin usr/sbin
 
-cp -af /bubble/init .
+cp -af ../bubble/init .
 
 cp -af \
   "$CERD"/fs/group \
