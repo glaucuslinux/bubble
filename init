@@ -33,4 +33,4 @@ mount -M -m /media/fs-rw /mnt/root/mnt/fs-rw
 
 kill $pid
 
-exec switch_root /mnt/root /usr/bin/init
+exec switch_root /mnt/root /bin/init
