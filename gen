@@ -13,7 +13,6 @@ rm -fr \
   "$GEND" \
   ../initramfs
 
-rm -fr "$GEND"
 mkdir -p "$GEND"
 cd "$GEND"
 

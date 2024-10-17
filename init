@@ -18,7 +18,6 @@ until label=$(blkid -L GLAUCUS) && mount -m -o ro $label /media/iso; do
 done
 
 mount -m -t erofs /media/iso/fs /media/fs-ro
-
 mount -m -o size=1G -t tmpfs tmpfs /media/fs-rw
 
 mkdir -p \
@@ -26,7 +25,6 @@ mkdir -p \
   /media/fs-rw/work
 
 mount -m -o lowerdir=/media/fs-ro,upperdir=/media/fs-rw/upper,workdir=/media/fs-rw/work -t overlay overlay /mnt/root
-
 mount -M -m /media/iso /mnt/root/mnt/iso
 mount -M -m /media/fs-ro /mnt/root/mnt/fs-ro
 mount -M -m /media/fs-rw /mnt/root/mnt/fs-rw
