@@ -13,7 +13,7 @@ modprobe loop
 
 mdevd -C > /dev/null 2>&1 & pid=$!
 
-until label=$(blkid -L GLAUCUS) && mount -m -o ro $label /media/iso; do
+until device=$(blkid -L GLAUCUS) && mount -m -o ro $device /media/iso; do
   sleep 1
 done
 

@@ -42,6 +42,7 @@ cp -af ../rad/src/rad "$ISOD"/tmp/usr/bin
 
 rm -fr \
   "$ISOD"/tmp/boot \
+  "$ISOD"/tmp/usr/share/bash-completion \
   "$ISOD"/tmp/usr/share/doc \
   "$ISOD"/tmp/usr/share/info \
   "$ISOD"/tmp/usr/share/man
