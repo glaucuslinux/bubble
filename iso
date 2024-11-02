@@ -45,6 +45,7 @@ rm -fr \
   "$ISOD"/tmp/usr/share/bash-completion \
   "$ISOD"/tmp/usr/share/doc \
   "$ISOD"/tmp/usr/share/info \
+  "$ISOD"/tmp/usr/share/locale \
   "$ISOD"/tmp/usr/share/man
 
 depmod -b "$ISOD"/tmp $ver
