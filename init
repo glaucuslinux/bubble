@@ -25,9 +25,9 @@ mkdir -p \
   /media/fs-rw/work
 
 mount -m -o lowerdir=/media/fs-ro,upperdir=/media/fs-rw/upper,workdir=/media/fs-rw/work -t overlay overlay /mnt/root
-mount -M -m /media/iso /mnt/root/mnt/iso
 mount -M -m /media/fs-ro /mnt/root/mnt/fs-ro
 mount -M -m /media/fs-rw /mnt/root/mnt/fs-rw
+mount -M -m /media/iso /mnt/root/mnt/iso
 
 kill $pid
 
