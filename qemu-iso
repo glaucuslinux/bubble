@@ -14,4 +14,4 @@ exec qemu-system-x86_64 \
   -vga qxl \
   -rtc base=localtime \
   -bios /usr/share/ovmf/x64/OVMF.4m.fd \
-  -cdrom "$@"
+  -cdrom "$1"
