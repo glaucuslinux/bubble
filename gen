@@ -42,6 +42,7 @@ cp -af \
 
 cp -af \
   /usr/bin/blkid \
+  /usr/bin/dash \
   /usr/bin/kill \
   /usr/bin/kmod \
   /usr/bin/mdevd \
@@ -49,11 +50,10 @@ cp -af \
   /usr/bin/mount \
   /usr/bin/switch_root \
   /usr/bin/toybox \
-  /usr/bin/yash \
   usr/bin
 
+ln -fns dash usr/bin/sh
 ln -fns kmod usr/bin/modprobe
-ln -fns yash usr/bin/sh
 
 for i in $(toybox); do
   ln -fns toybox usr/bin/$i
@@ -64,6 +64,7 @@ cp -af \
   /usr/lib/libblkid.so* \
   /usr/lib/libc.so \
   /usr/lib/libcrypto.so* \
+  /usr/lib/libedit.so* \
   /usr/lib/liblzma.so* \
   /usr/lib/libmount.so* \
   /usr/lib/libskarnet.so* \
