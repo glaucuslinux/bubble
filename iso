@@ -37,8 +37,11 @@ cp -af \
 for i in $(ls "$PKGD"); do
   bsdtar -xmPf "$PKGD"/$i/*.tar.zst -C "$ISOD"/tmp
 done
+for i in $(ls "$PKGD-iso"); do
+  bsdtar -xmPf "$PKGD-iso"/$i/*.tar.zst -C "$ISOD"/tmp
+done
 
-mkdir -pv \
+mkdir -p \
   "$ISOD"/tmp/mnt/fs-ro \
   "$ISOD"/tmp/mnt/fs-rw \
   "$ISOD"/tmp/mnt/iso

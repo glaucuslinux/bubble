@@ -26,8 +26,11 @@ mkdir -p \
 
 mount -o lowerdir=/media/fs-ro,upperdir=/media/fs-rw/upper,workdir=/media/fs-rw/work -t overlay overlay /mnt/root
 
-for i in dev mnt/fs-ro mnt/fs-rw mnt/iso proc sys; do
-  mount -M /media/$i /mnt/root/$i
+for i in dev proc sys; do
+  mount -M /$i /mnt/root/$i
+done
+for i in fs-ro fs-rw iso; do
+  mount -M /media/$i /mnt/root/mnt/$i
 done
 
 kill $pid
