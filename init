@@ -5,7 +5,7 @@
 
 export PATH=/usr/bin
 
-mount -m -t devtmpfs devtmpfs /dev
+mount -t devtmpfs devtmpfs /dev
 mount -t proc proc /proc
 mount -t sysfs sys /sys
 
@@ -13,21 +13,22 @@ modprobe loop
 
 mdevd -C > /dev/null 2>&1 & pid=$!
 
-until device=$(blkid -L GLAUCUS) && mount -m -o ro $device /media/iso; do
+until device=$(blkid -L GLAUCUS) && mount -o ro $device /media/iso; do
   sleep 1
 done
 
-mount -m -t erofs /media/iso/fs /media/fs-ro
-mount -m -o size=1G -t tmpfs tmpfs /media/fs-rw
+mount -t erofs /media/iso/fs /media/fs-ro
+mount -o size=1G -t tmpfs tmpfs /media/fs-rw
 
 mkdir -p \
   /media/fs-rw/upper \
   /media/fs-rw/work
 
-mount -m -o lowerdir=/media/fs-ro,upperdir=/media/fs-rw/upper,workdir=/media/fs-rw/work -t overlay overlay /mnt/root
-mount -M -m /media/fs-ro /mnt/root/mnt/fs-ro
-mount -M -m /media/fs-rw /mnt/root/mnt/fs-rw
-mount -M -m /media/iso /mnt/root/mnt/iso
+mount -o lowerdir=/media/fs-ro,upperdir=/media/fs-rw/upper,workdir=/media/fs-rw/work -t overlay overlay /mnt/root
+
+for i in dev mnt/fs-ro mnt/fs-rw mnt/iso proc sys; do
+  mount -M /media/$i /mnt/root/$i
+done
 
 kill $pid
 

@@ -38,6 +38,11 @@ for i in $(ls "$PKGD"); do
   bsdtar -xmPf "$PKGD"/$i/*.tar.zst -C "$ISOD"/tmp
 done
 
+mkdir -pv \
+  "$ISOD"/tmp/mnt/fs-ro \
+  "$ISOD"/tmp/mnt/fs-rw \
+  "$ISOD"/tmp/mnt/iso
+
 cp -af ../rad/src/rad "$ISOD"/tmp/usr/bin
 
 rm -fr \

@@ -17,7 +17,12 @@ mkdir -p "$GEND"
 cd "$GEND"
 
 mkdir -p \
+  dev \
   etc \
+  media/fs-ro \
+  media/fs-rw \
+  media/iso \
+  mnt/root \
   run \
   usr/bin \
   usr/lib/modules/$ver/kernel/drivers/usb \
