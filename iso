@@ -58,8 +58,8 @@ rm -fr \
 
 depmod -b "$ISOD"/tmp $ver
 
-chown -R 0:0 "$ISOD"
-chown -R 20:20 "$ISOD"/tmp/var/log/wtmpd
+chown -R root:root "$ISOD"
+chown -R 15:15 "$ISOD"/tmp/var/log/wtmpd
 
 mkfs.erofs "$ISOD"/fs "$ISOD"/tmp
 

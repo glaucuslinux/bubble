@@ -64,8 +64,8 @@ cp -af ../cross/boot/vmlinuz "$IMGD"/boot
 mkdir -p "$IMGD"/boot/EFI/BOOT
 cp -af /usr/share/limine/BOOTX64.EFI "$IMGD"/boot/EFI/BOOT
 
-chown -R 0:0 "$IMGD"
-chown -R 20:20 "$IMGD"/var/log/wtmpd
+chown -R root:root "$IMGD"
+chown -R 15:15 "$IMGD"/var/log/wtmpd
 
 umount -fR "$IMGD"/boot
 umount -fR "$IMGD"
