@@ -35,13 +35,13 @@ partx -a $device
 mkfs.fat -F 32 $partitionOne
 mke2fs -qt ext4 $partitionTwo
 
-rm -fr "$IMGD"
+rm -fR "$IMGD"
 mkdir -p "$IMGD"
 
 mount $partitionTwo "$IMGD"
 
-cp -afT ../cross "$IMGD"
-cp -af ../src "$IMGD"/var/cache/rad
+cp -fPpR ../cross/. "$IMGD"
+cp -fPpR ../src "$IMGD"/var/cache/rad
 
 mount $partitionOne "$IMGD"/boot
 
@@ -58,11 +58,11 @@ booster \
   --strip \
   "$IMGD"/boot/initramfs
 
-cp -af ../cerata/limine/limine.conf.img "$IMGD"/boot/limine.conf
-cp -af ../cross/boot/vmlinuz "$IMGD"/boot
+cp -fPp ../cerata/limine/limine.conf.img "$IMGD"/boot/limine.conf
+cp -fPp ../cross/boot/vmlinuz "$IMGD"/boot
 
 mkdir -p "$IMGD"/boot/EFI/BOOT
-cp -af /usr/share/limine/BOOTX64.EFI "$IMGD"/boot/EFI/BOOT
+cp -fPp /usr/share/limine/BOOTX64.EFI "$IMGD"/boot/EFI/BOOT
 
 chown -R root:root "$IMGD"
 chown -R 15:15 "$IMGD"/var/log/wtmpd
@@ -75,6 +75,6 @@ partx -d $partitionTwo
 
 losetup -d $device
 
-rm -fr "$IMGD"
+rm -fR "$IMGD"
 
 echo "img complete"

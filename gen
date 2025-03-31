@@ -9,7 +9,7 @@ CERD=/var/lib/rad/clusters/cerata
 GEND=../gen
 MODD=/usr/lib/modules/$ver/kernel
 
-rm -fr \
+rm -fR \
   "$GEND" \
   ../initramfs
 
@@ -27,24 +27,24 @@ mkdir -p \
   usr/bin \
   usr/lib/modules/$ver/kernel/drivers/usb
 
-mkdir -pm 555 \
+mkdir -m 555 -p \
   proc \
   sys
 
-ln -fns usr/bin bin
-ln -fns usr/lib lib
-ln -fns usr/bin sbin
-ln -fns bin usr/sbin
+ln -fs usr/bin bin
+ln -fs usr/lib lib
+ln -fs usr/bin sbin
+ln -fs bin usr/sbin
 
-cp -af ../bubble/init .
+cp -fPp ../bubble/init .
 
-cp -af \
+cp -fPp \
   "$CERD"/fs/group \
   "$CERD"/fs/passwd \
   "$CERD"/mdevd/mdev.conf \
   etc
 
-cp -af \
+cp -fPp \
   /usr/bin/blkid \
   /usr/bin/dash \
   /usr/bin/kill \
@@ -56,14 +56,14 @@ cp -af \
   /usr/bin/toybox \
   usr/bin
 
-ln -fns dash usr/bin/sh
-ln -fns kmod usr/bin/modprobe
+ln -fs dash usr/bin/sh
+ln -fs kmod usr/bin/modprobe
 
 for i in $(toybox); do
-  ln -fns toybox usr/bin/$i
+  ln -fs toybox usr/bin/$i
 done
 
-cp -af \
+cp -fPp \
   /usr/lib/ld-musl-x86_64.so.1 \
   /usr/lib/libblkid.so* \
   /usr/lib/libc.so \
@@ -78,14 +78,14 @@ cp -af \
   /usr/lib/libzstd.so* \
   usr/lib
 
-cp -af \
+cp -fPpR \
   "$MODD"/arch \
   "$MODD"/crypto \
   "$MODD"/fs \
   "$MODD"/lib \
   usr/lib/modules/$ver/kernel
 
-cp -af \
+cp -fPpR \
   "$MODD"/drivers/ata \
   "$MODD"/drivers/block \
   "$MODD"/drivers/cdrom \
@@ -102,7 +102,7 @@ cp -af \
   "$MODD"/drivers/virtio \
   usr/lib/modules/$ver/kernel/drivers
 
-cp -af \
+cp -fPp \
   "$MODD"/../modules.builtin \
   "$MODD"/../modules.builtin.modinfo \
   "$MODD"/../modules.order \
@@ -114,6 +114,6 @@ find . | cpio -o | zstd -22 --ultra -T0 --long > ../initramfs
 
 cd ../bubble
 
-rm -fr "$GEND"
+rm -fR "$GEND"
 
 echo "gen complete"
