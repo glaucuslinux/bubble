@@ -9,7 +9,7 @@ if [ $(id -u) -ne 0 ]; then
 fi
 
 iso="../glaucus-s6-x86-64-v3-$(date +"%Y%m%d").iso"
-ver=6.10.6-3-cachyos
+ver=6.14.2-2-cachyos
 
 ISOD=../iso
 PKGD=../pkg/skel
@@ -27,7 +27,7 @@ cp -fPp \
   "$ISOD"
 
 cp -fPp /usr/share/limine/BOOTX64.EFI "$ISOD"/EFI/BOOT
-cp -fPp ../cerata/limine/limine.conf "$ISOD"/limine
+cp -fPp ../cerata/limine/files/limine.conf "$ISOD"/limine
 cp -fPp \
   /usr/share/limine/limine-bios.sys \
   /usr/share/limine/limine-bios-cd.bin \

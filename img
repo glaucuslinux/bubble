@@ -10,7 +10,7 @@ fi
 
 img="../glaucus-s6-x86-64-v3-$(date +"%Y%m%d").img"
 len=10240
-ver=6.10.6-3-cachyos
+ver=6.14.2-2-cachyos
 
 IMGD=../img
 
@@ -53,12 +53,12 @@ booster \
   --compression=zstd \
   --kernel-version=$ver \
   --modules-dir="$IMGD"/usr/lib/modules/$ver \
-  --config=../cerata/booster/booster.yaml \
+  --config=../cerata/booster/files/booster.yaml \
   --universal \
   --strip \
   "$IMGD"/boot/initramfs
 
-cp -fPp ../cerata/limine/limine.conf.img "$IMGD"/boot/limine.conf
+cp -fPp ../cerata/limine/files/limine.conf.img "$IMGD"/boot/limine.conf
 cp -fPp ../cross/boot/vmlinuz "$IMGD"/boot
 
 mkdir -p "$IMGD"/boot/EFI/BOOT
