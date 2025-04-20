@@ -39,9 +39,9 @@ ln -fs bin usr/sbin
 cp -fPp ../bubble/init .
 
 cp -fPp \
-  "$CERD"/fs/group \
-  "$CERD"/fs/passwd \
-  "$CERD"/mdevd/mdev.conf \
+  "$CERD"/fs/files/group \
+  "$CERD"/fs/files/passwd \
+  "$CERD"/mdevd/files/mdev.conf \
   etc
 
 cp -fPp \
