@@ -9,7 +9,7 @@ if [ $(id -u) -ne 0 ]; then
 fi
 
 iso="../glaucus-s6-x86-64-v3-$(date +"%Y%m%d").iso"
-ver=6.14.2-2-cachyos
+ver=6.14.4-2-cachyos
 
 ISOD=../iso
 PKGD=../pkg/skel
@@ -37,8 +37,11 @@ cp -fPp \
 for i in $(ls "$PKGD"); do
   bsdtar --no-same-owner -xmPf "$PKGD"/$i/*.tar.zst -C "$ISOD"/tmp
 done
-for i in $(ls "$PKGD-iso"); do
-  bsdtar --no-same-owner -xmPf "$PKGD-iso"/$i/*.tar.zst -C "$ISOD"/tmp
+for i in $(ls "$PKGD"-devel); do
+  bsdtar --no-same-owner -xmPf "$PKGD"-devel/$i/*.tar.zst -C "$ISOD"/tmp
+done
+for i in $(ls "$PKGD"-iso); do
+  bsdtar --no-same-owner -xmPf "$PKGD"-iso/$i/*.tar.zst -C "$ISOD"/tmp
 done
 
 mkdir -p \
