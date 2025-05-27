@@ -114,7 +114,7 @@ cp -fPp \
 
 depmod -b . $ver
 
-find . | cpio -o | zstd -22 --ultra -T0 --long > ../initramfs
+find . | cpio -o | zstd -3 -T0 > ../initramfs
 
 cd ../bubble
 
