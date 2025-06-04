@@ -10,10 +10,10 @@
 
 MNTD=../mnt
 
-umount -fR $MNTD
+mountpoint -q $MNTD && umount -fR $MNTD
 losetup -D
 
-sleep 3
+sleep 1
 
 rm -fR $MNTD
 

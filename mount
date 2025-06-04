@@ -15,11 +15,16 @@ fi
 
 img="${1:-../glaucus-s6-x86-64-v3-$(date +"%Y%m%d").img}"
 
+if [ ! -f $img ]; then
+  echo "img not found"
+  exit 1
+fi
+
 MNTD=../mnt
 
 modprobe loop
 
-umount -fR $MNTD
+mountpoint -q $MNTD && umount -fR $MNTD
 losetup -D
 
 device=$(losetup -f)
