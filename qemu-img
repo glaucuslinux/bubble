@@ -8,13 +8,15 @@
 # License, v. 2.0. If a copy of the MPL was not distributed with this
 # file, You can obtain one at https://mozilla.org/MPL/2.0/.
 
+img="${1:-../glaucus-s6-x86-64-v3-$(date +"%Y%m%d").img}"
+
 exec qemu-system-x86_64 \
   -machine q35,accel=kvm \
   -cpu host \
   -smp 4 \
   -m 4G \
   -name glaucus \
-  -drive file="$1",format=raw \
+  -drive file=$img,format=raw \
   -nic model=e1000 \
   -display gtk,gl=on \
   -vga qxl \

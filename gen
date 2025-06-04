@@ -15,11 +15,11 @@ GEND=../gen
 MODD=/usr/lib/modules/$ver/kernel
 
 rm -fR \
-  "$GEND" \
+  $GEND \
   ../initramfs
 
-mkdir -p "$GEND"
-cd "$GEND"
+mkdir -p $GEND
+cd $GEND
 
 mkdir -p \
   dev \
@@ -44,9 +44,9 @@ ln -fs bin usr/sbin
 cp -fPp ../bubble/init .
 
 cp -fPp \
-  "$CERD"/fs/files/group \
-  "$CERD"/fs/files/passwd \
-  "$CERD"/mdevd/files/mdev.conf \
+  $CERD/fs/files/group \
+  $CERD/fs/files/passwd \
+  $CERD/mdevd/files/mdev.conf \
   etc
 
 cp -fPp \
@@ -84,33 +84,33 @@ cp -fPp \
   usr/lib
 
 cp -fPpR \
-  "$MODD"/arch \
-  "$MODD"/crypto \
-  "$MODD"/fs \
-  "$MODD"/lib \
+  $MODD/arch \
+  $MODD/crypto \
+  $MODD/fs \
+  $MODD/lib \
   usr/lib/modules/$ver/kernel
 
 cp -fPpR \
-  "$MODD"/drivers/ata \
-  "$MODD"/drivers/block \
-  "$MODD"/drivers/cdrom \
-  "$MODD"/drivers/gpu \
-  "$MODD"/drivers/hid \
-  "$MODD"/drivers/hwmon \
-  "$MODD"/drivers/input \
-  "$MODD"/drivers/md \
-  "$MODD"/drivers/message \
-  "$MODD"/drivers/nvme \
-  "$MODD"/drivers/scsi \
-  "$MODD"/drivers/usb/host \
-  "$MODD"/drivers/usb/storage \
-  "$MODD"/drivers/virtio \
+  $MODD/drivers/ata \
+  $MODD/drivers/block \
+  $MODD/drivers/cdrom \
+  $MODD/drivers/gpu \
+  $MODD/drivers/hid \
+  $MODD/drivers/hwmon \
+  $MODD/drivers/input \
+  $MODD/drivers/md \
+  $MODD/drivers/message \
+  $MODD/drivers/nvme \
+  $MODD/drivers/scsi \
+  $MODD/drivers/usb/host \
+  $MODD/drivers/usb/storage \
+  $MODD/drivers/virtio \
   usr/lib/modules/$ver/kernel/drivers
 
 cp -fPp \
-  "$MODD"/../modules.builtin \
-  "$MODD"/../modules.builtin.modinfo \
-  "$MODD"/../modules.order \
+  $MODD/../modules.builtin \
+  $MODD/../modules.builtin.modinfo \
+  $MODD/../modules.order \
   usr/lib/modules/$ver
 
 depmod -b . $ver
@@ -119,6 +119,6 @@ find . | cpio -o | zstd -3 -T0 > ../initramfs
 
 cd ../bubble
 
-rm -fR "$GEND"
+rm -fR $GEND
 
 echo "gen complete"

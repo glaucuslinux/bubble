@@ -40,46 +40,46 @@ partx -a $device
 mkfs.fat -F 32 $partitionOne
 mke2fs -qt ext4 $partitionTwo
 
-rm -fR "$IMGD"
-mkdir -p "$IMGD"
+rm -fR $IMGD
+mkdir -p $IMGD
 
-mount $partitionTwo "$IMGD"
+mount $partitionTwo $IMGD
 
-cp -fPpR ../cross/. "$IMGD"
-cp -fPpR ../src "$IMGD"/var/cache/rad
+cp -fPpR ../cross/. $IMGD
+cp -fPpR ../src $IMGD/var/cache/rad
 
-mount $partitionOne "$IMGD"/boot
+mount $partitionOne $IMGD/boot
 
-depmod -b "$IMGD" $ver
+depmod -b $IMGD $ver
 
 booster \
   build \
   --force \
   --compression=zstd \
   --kernel-version=$ver \
-  --modules-dir="$IMGD"/usr/lib/modules/$ver \
+  --modules-dir=$IMGD/usr/lib/modules/$ver \
   --config=../cerata/booster/files/booster.yaml \
   --universal \
   --strip \
-  "$IMGD"/boot/initramfs
+  $IMGD/boot/initramfs
 
-cp -fPp ../cerata/limine/files/limine.conf.img "$IMGD"/boot/limine.conf
-cp -fPp ../cross/boot/vmlinuz "$IMGD"/boot
+cp -fPp ../cerata/limine/files/limine.conf.img $IMGD/boot/limine.conf
+cp -fPp ../cross/boot/vmlinuz $IMGD/boot
 
-mkdir -p "$IMGD"/boot/EFI/BOOT
-cp -fPp /usr/share/limine/BOOTX64.EFI "$IMGD"/boot/EFI/BOOT
+mkdir -p $IMGD/boot/EFI/BOOT
+cp -fPp /usr/share/limine/BOOTX64.EFI $IMGD/boot/EFI/BOOT
 
-chown -R root:root "$IMGD"
-chown -R 15:15 "$IMGD"/var/log/wtmpd
+chown -R root:root $IMGD
+chown -R 15:15 $IMGD/var/log/wtmpd
 
-umount -fR "$IMGD"/boot
-umount -fR "$IMGD"
+umount -fR $IMGD/boot
+umount -fR $IMGD
 
 partx -d $partitionOne
 partx -d $partitionTwo
 
 losetup -d $device
 
-rm -fR "$IMGD"
+rm -fR $IMGD
 
 echo "img complete"

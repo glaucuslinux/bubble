@@ -1,0 +1,50 @@
+#!/bin/sh
+
+# SPDX-License-Identifier: MPL-2.0
+
+# Copyright © 2025 Firas Khana
+
+# This Source Code Form is subject to the terms of the Mozilla Public
+# License, v. 2.0. If a copy of the MPL was not distributed with this
+# file, You can obtain one at https://mozilla.org/MPL/2.0/.
+
+if [ $(id -u) -ne 0 ]; then
+  echo "permission denied"
+  exit 1
+fi
+
+img="${1:-../glaucus-s6-x86-64-v3-$(date +"%Y%m%d").img}"
+
+MNTD=../mnt
+
+modprobe loop
+
+umount -fR $MNTD
+losetup -D
+
+device=$(losetup -f)
+partitionOne=${device}p1
+partitionTwo=${device}p2
+
+losetup $device $img
+partx -a $device
+
+rm -fR $MNTD
+mkdir -p $MNTD
+
+mount $partitionTwo $MNTD
+mount $partitionOne $MNTD/boot
+
+rm -fR $MNTD/bubble
+cp -fPpR ../bubble $MNTD
+
+[ -f $MNTD/initramfs ] && cp -fPp $MNTD/initramfs ..
+
+cp -fPp ../rad/rad-x86-64-v3-glaucus-linux-musl $MNTD/usr/bin/rad
+chmod 755 $MNTD/usr/bin/rad
+
+chown -R 0:0 \
+  $MNTD/bubble \
+  $MNTD/usr/bin/rad
+
+echo "mount complete"

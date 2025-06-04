@@ -19,59 +19,59 @@ ver=6.14.4-2-cachyos
 ISOD=../iso
 PKGD=../pkg/skel
 
-rm -fR "$ISOD"
+rm -fR $ISOD
 
 mkdir -p \
-  "$ISOD"/EFI/BOOT \
-  "$ISOD"/limine \
-  "$ISOD"/tmp
+  $ISOD/EFI/BOOT \
+  $ISOD/limine \
+  $ISOD/tmp
 
 cp -fPp \
   ../initramfs \
   ../cross/boot/vmlinuz \
-  "$ISOD"
+  $ISOD
 
-cp -fPp /usr/share/limine/BOOTX64.EFI "$ISOD"/EFI/BOOT
+cp -fPp /usr/share/limine/BOOTX64.EFI $ISOD/EFI/BOOT
 cp -fPp \
   ../cerata/limine/files/limine.conf \
   /usr/share/limine/limine-bios.sys \
   /usr/share/limine/limine-bios-cd.bin \
   /usr/share/limine/limine-uefi-cd.bin \
-  "$ISOD"/limine
+  $ISOD/limine
 
-for i in $(ls "$PKGD"); do
-  bsdtar --no-same-owner -xmPf "$PKGD"/$i/*.tar.zst -C "$ISOD"/tmp
+for i in $(ls $PKGD); do
+  bsdtar --no-same-owner -xmPf $PKGD/$i/*.tar.zst -C $ISOD/tmp
 done
-for i in $(ls "$PKGD"-devel); do
-  bsdtar --no-same-owner -xmPf "$PKGD"-devel/$i/*.tar.zst -C "$ISOD"/tmp
+for i in $(ls $PKGD-devel); do
+  bsdtar --no-same-owner -xmPf $PKGD-devel/$i/*.tar.zst -C $ISOD/tmp
 done
-for i in $(ls "$PKGD"-iso); do
-  bsdtar --no-same-owner -xmPf "$PKGD"-iso/$i/*.tar.zst -C "$ISOD"/tmp
+for i in $(ls $PKGD-iso); do
+  bsdtar --no-same-owner -xmPf $PKGD-iso/$i/*.tar.zst -C $ISOD/tmp
 done
 
 mkdir -p \
-  "$ISOD"/tmp/mnt/fs-ro \
-  "$ISOD"/tmp/mnt/fs-rw \
-  "$ISOD"/tmp/mnt/iso
+  $ISOD/tmp/mnt/fs-ro \
+  $ISOD/tmp/mnt/fs-rw \
+  $ISOD/tmp/mnt/iso
 
-cp -fPp ../rad/src/rad "$ISOD"/tmp/usr/bin
+cp -fPp ../rad/src/rad $ISOD/tmp/usr/bin
 
 rm -fR \
-  "$ISOD"/tmp/boot \
-  "$ISOD"/tmp/usr/share/bash-completion \
-  "$ISOD"/tmp/usr/share/doc \
-  "$ISOD"/tmp/usr/share/info \
-  "$ISOD"/tmp/usr/share/locale \
-  "$ISOD"/tmp/usr/share/man
+  $ISOD/tmp/boot \
+  $ISOD/tmp/usr/share/bash-completion \
+  $ISOD/tmp/usr/share/doc \
+  $ISOD/tmp/usr/share/info \
+  $ISOD/tmp/usr/share/locale \
+  $ISOD/tmp/usr/share/man
 
-depmod -b "$ISOD"/tmp $ver
+depmod -b $ISOD/tmp $ver
 
-chown -R root:root "$ISOD"
-chown -R 15:15 "$ISOD"/tmp/var/log/wtmpd
+chown -R root:root $ISOD
+chown -R 15:15 $ISOD/tmp/var/log/wtmpd
 
-mkfs.erofs "$ISOD"/fs "$ISOD"/tmp
+mkfs.erofs $ISOD/fs $ISOD/tmp
 
-rm -fR "$ISOD"/tmp
+rm -fR $ISOD/tmp
 
 xorriso \
   -as mkisofs \
@@ -95,10 +95,10 @@ xorriso \
   --protective-msdos-label \
   -efi-boot-part \
   --efi-boot-image \
-  "$ISOD"
+  $ISOD
 
 limine bios-install $iso
 
-rm -fR "$ISOD"
+rm -fR $ISOD
 
 echo "iso complete"
