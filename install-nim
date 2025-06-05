@@ -1,0 +1,36 @@
+#!/bin/sh
+
+# SPDX-License-Identifier: MPL-2.0
+
+# Copyright © 2025 Firas Khana
+
+# This Source Code Form is subject to the terms of the Mozilla Public
+# License, v. 2.0. If a copy of the MPL was not distributed with this
+# file, You can obtain one at https://mozilla.org/MPL/2.0/.
+
+for i in atlas choosenim config.nims Nim nim nimble; do
+  rm -fR \
+    ~/$i \
+    ~/.$i \
+    ~/.cache/$i \
+    ~/.config/$i \
+    ~/.local/share/$i \
+    ~/.local/state/$i \
+    /etc/$i \
+    /opt/$i \
+    /usr/bin/$i \
+    /usr/lib/$i \
+    /usr/share/$i
+done
+
+curl -fL -o nim.tar.xz -s https://github.com/nim-lang/nightlies/releases/download/latest-devel/linux_x64.tar.xz
+
+tar --no-same-owner -xmP -f nim.tar.xz -C .
+
+./nim-*/deinstall.sh /usr/bin
+
+mv nim-* ~/.nim
+
+cd ../rad
+
+PATH="~/.nim/bin:$PATH" nimble build

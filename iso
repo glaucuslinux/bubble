@@ -40,13 +40,13 @@ cp -fPp \
   $ISOD/limine
 
 for i in $(ls $PKGD); do
-  bsdtar --no-same-owner -xmPf $PKGD/$i/*.tar.zst -C $ISOD/tmp
+  tar --no-same-owner -xmP -f $PKGD/$i/*.tar.zst -C $ISOD/tmp
 done
 for i in $(ls $PKGD-devel); do
-  bsdtar --no-same-owner -xmPf $PKGD-devel/$i/*.tar.zst -C $ISOD/tmp
+  tar --no-same-owner -xmP -f $PKGD-devel/$i/*.tar.zst -C $ISOD/tmp
 done
 for i in $(ls $PKGD-iso); do
-  bsdtar --no-same-owner -xmPf $PKGD-iso/$i/*.tar.zst -C $ISOD/tmp
+  tar --no-same-owner -xmP -f $PKGD-iso/$i/*.tar.zst -C $ISOD/tmp
 done
 
 mkdir -p \
