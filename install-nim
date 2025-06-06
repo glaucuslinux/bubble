@@ -30,7 +30,3 @@ tar --no-same-owner -xmP -f nim.tar.xz -C .
 ./nim-*/deinstall.sh /usr/bin
 
 mv nim-* ~/.nim
-
-cd ../rad
-
-PATH="~/.nim/bin:$PATH" nimble build
