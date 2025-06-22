@@ -40,8 +40,8 @@ mkdir -p $MNTD
 mount $partitionTwo $MNTD
 mount $partitionOne $MNTD/boot
 
-rm -fR $MNTD/bubble
-cp -fPpR ../bubble $MNTD
+rm -fR $MNTD/live
+cp -fPpR ../live $MNTD
 
 [ -f $MNTD/initramfs ] && cp -fPp $MNTD/initramfs ..
 
@@ -49,7 +49,7 @@ cp -fPp ../rad/rad-x86-64-v3-glaucus-linux-musl $MNTD/usr/bin/rad
 chmod 755 $MNTD/usr/bin/rad
 
 chown -R 0:0 \
-  $MNTD/bubble \
+  $MNTD/live \
   $MNTD/usr/bin/rad
 
 echo "mount complete"

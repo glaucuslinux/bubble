@@ -10,7 +10,7 @@
 
 ver=$(uname -r)
 
-CERD=/var/lib/rad/clusters/cerata
+REPO=/var/lib/rad/repo/core
 GEND=../gen
 MODD=/usr/lib/modules/$ver/kernel
 
@@ -41,12 +41,12 @@ ln -fs usr/lib lib
 ln -fs usr/bin sbin
 ln -fs bin usr/sbin
 
-cp -fPp ../bubble/init .
+cp -fPp ../live/init .
 
 cp -fPp \
-  $CERD/fs/files/group \
-  $CERD/fs/files/passwd \
-  $CERD/mdevd/files/mdev.conf \
+  $REPO/fs/files/group \
+  $REPO/fs/files/passwd \
+  $REPO/mdevd/files/mdev.conf \
   etc
 
 cp -fPp \
@@ -117,7 +117,7 @@ depmod -b . $ver
 
 find . | cpio -o | zstd -3 -T0 > ../initramfs
 
-cd ../bubble
+cd ../live
 
 rm -fR $GEND
 

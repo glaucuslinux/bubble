@@ -1,4 +1,4 @@
-# bubble
+# live
 glaucus live system
 
 ## Community
@@ -9,6 +9,6 @@ glaucus live system
 - [YouTube](https://youtube.com/@glaucuslinux)
 
 ## Mirrors
-- [Codeberg](https://codeberg.org/glaucuslinux/bubble)
-- [GitHub](https://github.com/glaucuslinux/bubble)
-- [SourceHut](https://git.sr.ht/~glaucuslinux/bubble)
+- [Codeberg](https://codeberg.org/glaucuslinux/live)
+- [GitHub](https://github.com/glaucuslinux/live)
+- [SourceHut](https://git.sr.ht/~glaucuslinux/live)

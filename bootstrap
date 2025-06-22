@@ -15,13 +15,13 @@ cd glaucus
 
 mkdir -p \
   /var/cache/rad \
-  /var/lib/rad/clusters
+  /var/lib/rad/repo
 
 ln -fs $PWD/src /var/cache/rad
-ln -fs $PWD/cerata /var/lib/rad/clusters
+ln -fs $PWD/core /var/lib/rad/repo
 
 for i in a2x asciidoc gtkdocize help2man ldconfig makeinfo po4a texi2dvi; do
-  cp -fPp cerata/musl/files/true /usr/bin/$i
+  cp -fPp core/musl/files/true /usr/bin/$i
 done
 
 cd rad
@@ -34,7 +34,7 @@ chmod 755 rad
 ./rad bootstrap toolchain
 ./rad bootstrap cross
 
-cd ../bubble
+cd ../live
 ./img
 
 ./mount

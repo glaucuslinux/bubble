@@ -58,12 +58,12 @@ booster \
   --compression=zstd \
   --kernel-version=$ver \
   --modules-dir=$IMGD/usr/lib/modules/$ver \
-  --config=../cerata/booster/files/booster.yaml \
+  --config=../core/booster/files/booster.yaml \
   --universal \
   --strip \
   $IMGD/boot/initramfs
 
-cp -fPp ../cerata/limine/files/limine.conf.img $IMGD/boot/limine.conf
+cp -fPp ../core/limine/files/limine.conf.img $IMGD/boot/limine.conf
 cp -fPp ../cross/boot/vmlinuz $IMGD/boot
 
 mkdir -p $IMGD/boot/EFI/BOOT

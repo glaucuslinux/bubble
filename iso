@@ -33,7 +33,7 @@ cp -fPp \
 
 cp -fPp /usr/share/limine/BOOTX64.EFI $ISOD/EFI/BOOT
 cp -fPp \
-  ../cerata/limine/files/limine.conf \
+  ../core/limine/files/limine.conf \
   /usr/share/limine/limine-bios.sys \
   /usr/share/limine/limine-bios-cd.bin \
   /usr/share/limine/limine-uefi-cd.bin \
