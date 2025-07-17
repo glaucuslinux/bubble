@@ -17,8 +17,9 @@ mkdir -p \
   /var/cache/rad \
   /var/lib/rad/repo
 
-ln -fs $PWD/src /var/cache/rad
 ln -fs $PWD/core /var/lib/rad/repo
+ln -fs $PWD/log /var/log/rad
+ln -fs $PWD/src /var/cache/rad
 
 for i in a2x asciidoc gtkdocize help2man ldconfig makeinfo po4a texi2dvi; do
   cp -fPp core/musl/files/true /usr/bin/$i
@@ -31,8 +32,8 @@ curl -fLOs https://github.com/glaucuslinux/rad/releases/latest/download/rad-x86-
 
 chmod 755 rad
 
-./rad bootstrap toolchain
-./rad bootstrap cross
+./rad bootstrap 1
+./rad bootstrap 2
 
 cd ../live
 ./img
